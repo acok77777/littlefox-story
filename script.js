@@ -7,12 +7,12 @@ const ranges = [
   { label: "51 - 64편", start: 51, end: 64, emoji: "🐸" }
 ];
 
-// w 01.txt를 data/w-01.txt 이름으로 업로드하면 자동으로 읽어옵니다.
+// w 01.txt를 data/w 01.txt 이름으로 업로드하면 자동으로 읽어옵니다.
 // 원본 파일 형식: "1번", "제목: I See 나는 봐요", 영어 문장, 해석 문장 순서
 const stories = {
   1: {
     title: "I See",
-    audio: "audio/s-01.mp3",
+    audio: "audio/s 01.mp3",
     lines: [
       { en: "I see a rock.", ko: "나는 바위를 봐요." },
       { en: "I see an ant.", ko: "나는 개미를 봐요." },
@@ -96,11 +96,11 @@ function openRange(range) {
   showScreen(listScreen);
 }
 async function loadStoryTextFile(n) {
-  // 1편은 data/w-01.txt 파일에서 실제 내용을 읽어옵니다.
+  // 1편은 data/w 01.txt 파일에서 실제 내용을 읽어옵니다.
   // GitHub Pages는 파일 경로/대소문자를 구분하므로 이름을 정확히 맞춰 주세요.
   if (n !== 1) return;
   try {
-    const response = await fetch("data/w-01.txt", { cache: "no-store" });
+    const response = await fetch("data/w 01.txt", { cache: "no-store" });
     if (!response.ok) throw new Error("텍스트 파일을 찾을 수 없습니다.");
     const raw = await response.text();
     const parsed = parseStoryText(raw);
@@ -111,7 +111,7 @@ async function loadStoryTextFile(n) {
     }
   } catch (error) {
     // 텍스트 파일을 아직 올리지 않았으면 코드 안의 시범 문장으로 표시합니다.
-    console.warn("data/w-01.txt를 읽지 못해 시범 데이터를 표시합니다.", error);
+    console.warn("data/w 01.txt를 읽지 못해 시범 데이터를 표시합니다.", error);
   }
 }
 function parseStoryText(raw) {
@@ -220,7 +220,7 @@ audioButton.addEventListener("click", async () => {
     if (storyAudio.paused) await storyAudio.play();
     else storyAudio.pause();
   } catch (error) {
-    alert("음성을 재생할 수 없어요. audio 폴더에 s-01.mp3 파일이 있는지, 파일명이 맞는지 확인해 주세요.");
+    alert("음성을 재생할 수 없어요. audio 폴더에 s 01.mp3 파일이 있는지, 파일명이 맞는지 확인해 주세요.");
   }
 });
 backButton.addEventListener("click", () => {
