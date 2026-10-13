@@ -1,22 +1,21 @@
-
 <!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffb9d5">
-  <title>리틀팍스 동화 학습</title>
+  <title>영어 동화 공부방</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
-    <button id="backButton" class="icon-button hidden" type="button" aria-label="뒤로">‹</button>
+    <button id="backButton" class="icon-button hidden" aria-label="뒤로">‹</button>
     <div class="brand">
-      <span aria-hidden="true">🐰</span>
-      <h1 id="pageTitle" class="visually-hidden">영어 동화 공부방</h1>
-      <span aria-hidden="true">✦</span>
+      <span>🐰</span>
+      <h1 id="pageTitle">영어 동화 공부방</h1>
+      <span>✦</span>
     </div>
-    <button id="closeButton" class="icon-button hidden" type="button" aria-label="목록 또는 홈으로">×</button>
+    <button id="closeButton" class="icon-button hidden" aria-label="홈으로">×</button>
   </header>
 
   <main class="app">
@@ -24,8 +23,8 @@
       <div class="hero-card">
         <p class="tiny-label">LITTLE FOX STORY TIME</p>
         <h2>오늘도 영어랑<br>친해져 볼까요? ♡</h2>
-        <p class="hero-description">동화를 읽고, 듣고, 공부 완료를 체크해 봐요!</p>
-        <div class="hero-characters" aria-hidden="true">🐰 🐻</div>
+        <p>동화를 읽고, 듣고, 공부 완료를 체크해 봐요!</p>
+        <div class="hero-characters">🐰 🐻</div>
       </div>
 
       <section class="progress-card" aria-label="학습 진도">
@@ -40,20 +39,14 @@
       </section>
 
       <div class="section-title">
-        <span aria-hidden="true">🌷</span>
-        <h2>공부할 동화 고르기</h2>
-        <span aria-hidden="true">🌷</span>
+        <span>🌷</span><h2>공부할 동화 고르기</h2><span>🌷</span>
       </div>
-
       <div class="range-grid" id="rangeGrid"></div>
       <div class="friendly-tip">🐣 천천히 해도 괜찮아요. 매일 조금씩!</div>
     </section>
 
     <section id="listScreen" class="screen hidden">
-      <div class="section-title left">
-        <span aria-hidden="true">📚</span>
-        <h2>동화 목록</h2>
-      </div>
+      <div class="section-title left"><span>📚</span><h2>동화 목록</h2></div>
       <p class="section-description" id="listDescription"></p>
       <div id="storyList" class="story-list"></div>
       <div class="friendly-tip">🧸 공부를 마친 편은 체크해 두세요!</div>
@@ -62,8 +55,8 @@
     <section id="studyScreen" class="screen hidden">
       <div class="study-heading">
         <div class="study-title-wrap">
-          <span class="mini-mascot" aria-hidden="true">🐻</span>
-          <div class="study-title-text">
+          <span class="mini-mascot">🐻</span>
+          <div>
             <p class="eyebrow" id="studyEpisode">1편</p>
             <h2 id="studyTitle">I See</h2>
             <p class="title-translation" id="studyTitleKo">나는 봐요</p>
@@ -74,7 +67,13 @@
       <section class="audio-card">
         <div class="audio-topline">
           <div class="audio-card-title">🎧 영어 듣기</div>
-          <button id="playButton" class="play-button" type="button" aria-label="재생">▶</button>
+          <button
+            id="playButton"
+            class="play-button"
+            type="button"
+            aria-label="재생"
+            title="재생"
+          >▶</button>
         </div>
 
         <audio id="storyAudio" preload="metadata"></audio>
@@ -84,11 +83,21 @@
           <span id="duration">0:00</span>
         </div>
 
-        <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="음성 재생 위치">
+        <input
+          id="seekBar"
+          class="seek-bar"
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          step="0.1"
+          aria-label="음성 재생 위치"
+        >
 
         <div class="audio-toolbar">
-          <button id="back5Button" class="audio-control-button" type="button">↶ 5초</button>
-          <button id="forward5Button" class="audio-control-button" type="button">5초 ↷</button>
+          <button id="back5Button" class="audio-control-button skip-button" type="button">↶ 5초</button>
+          <button id="forward5Button" class="audio-control-button skip-button" type="button">5초 ↷</button>
+
           <div class="speed-controls" role="group" aria-label="재생 속도">
             <button class="speed-button active" data-speed="1" type="button">1배속</button>
             <button class="speed-button" data-speed="1.5" type="button">1.5배속</button>
@@ -109,7 +118,7 @@
 
       <section class="completion-card">
         <div class="completion-copy">
-          <span class="completion-mascot" aria-hidden="true">🐥</span>
+          <span class="completion-mascot">🐥</span>
           <div>
             <strong>오늘 공부 완료했나요?</strong>
             <p>체크한 뒤 저장하기를 눌러 주세요.</p>
@@ -126,7 +135,9 @@
         <p id="saveMessage" class="save-message" aria-live="polite"></p>
       </section>
 
-      <p class="small-note">※ 공부 완료 기록은 이 기기의 브라우저에 저장됩니다.</p>
+      <p class="small-note">
+        ※ 공부 완료 기록은 이 기기의 브라우저에 저장됩니다.
+      </p>
     </section>
   </main>
 
