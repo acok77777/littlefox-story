@@ -1,136 +1,917 @@
 
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffb9d5">
-  <title>리틀팍스 동화 학습</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="topbar">
-    <button id="backButton" class="icon-button hidden" type="button" aria-label="뒤로">‹</button>
-    <div class="brand">
-      <span aria-hidden="true">🐰</span>
-      <h1 id="pageTitle" class="visually-hidden">영어 동화 공부방</h1>
-      <span aria-hidden="true">✦</span>
-    </div>
-    <button id="closeButton" class="icon-button hidden" type="button" aria-label="목록 또는 홈으로">×</button>
-  </header>
+/* ========================================
+   1. 기본 설정
+======================================== */
+:root {
+  --pink: #ffb9d5;
+  --pink-light: #fff0f7;
+  --pink-dark: #df6fa6;
+  --purple: #8c62c9;
+  --purple-light: #f0e7ff;
+  --text: #51465f;
+  --muted: #9686a3;
+  --white: #ffffff;
+  --border: #ead8f5;
+  --shadow: 0 7px 22px rgba(135, 94, 170, 0.10);
+}
 
-  <main class="app">
-    <section id="homeScreen" class="screen">
-      <div class="hero-card">
-        <p class="tiny-label">LITTLE FOX STORY TIME</p>
-        <h2>오늘도 영어랑<br>친해져 볼까요? ♡</h2>
-        <p class="hero-description">동화를 읽고, 듣고, 공부 완료를 체크해 봐요!</p>
-        <div class="hero-characters" aria-hidden="true">🐰 🐻</div>
-      </div>
+* {
+  box-sizing: border-box;
+}
 
-      <section class="progress-card" aria-label="학습 진도">
-        <div class="progress-heading">
-          <strong>🌷 나의 학습 진도</strong>
-          <strong id="progressCount">0 / 64편</strong>
-        </div>
-        <div class="progress-track">
-          <div id="progressBar" class="progress-fill"></div>
-        </div>
-        <p id="progressText">아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!</p>
-      </section>
+html {
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
 
-      <div class="section-title">
-        <span aria-hidden="true">🌷</span>
-        <h2>공부할 동화 고르기</h2>
-        <span aria-hidden="true">🌷</span>
-      </div>
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background: linear-gradient(160deg, #fff4f9 0%, #f6efff 55%, #fff2fa 100%);
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  line-height: 1.65;
+}
 
-      <div class="range-grid" id="rangeGrid"></div>
-      <div class="friendly-tip">🐣 천천히 해도 괜찮아요. 매일 조금씩!</div>
-    </section>
+button,
+input {
+  font: inherit;
+}
 
-    <section id="listScreen" class="screen hidden">
-      <div class="section-title left">
-        <span aria-hidden="true">📚</span>
-        <h2>동화 목록</h2>
-      </div>
-      <p class="section-description" id="listDescription"></p>
-      <div id="storyList" class="story-list"></div>
-      <div class="friendly-tip">🧸 공부를 마친 편은 체크해 두세요!</div>
-    </section>
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    <section id="studyScreen" class="screen hidden">
-      <div class="study-heading">
-        <div class="study-title-wrap">
-          <span class="mini-mascot" aria-hidden="true">🐻</span>
-          <div class="study-title-text">
-            <p class="eyebrow" id="studyEpisode">1편</p>
-            <h2 id="studyTitle">I See</h2>
-            <p class="title-translation" id="studyTitleKo">나는 봐요</p>
-          </div>
-        </div>
-      </div>
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #c9a5ff;
+  outline-offset: 3px;
+}
 
-      <section class="audio-card">
-        <div class="audio-topline">
-          <div class="audio-card-title">🎧 영어 듣기</div>
-          <button id="playButton" class="play-button" type="button" aria-label="재생">▶</button>
-        </div>
+.hidden {
+  display: none !important;
+}
 
-        <audio id="storyAudio" preload="metadata"></audio>
+/* ========================================
+   2. 상단 제목 바
+======================================== */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(226, 194, 220, 0.55);
+  background: rgba(255, 248, 252, 0.94);
+  backdrop-filter: blur(12px);
+}
 
-        <div class="seek-labels">
-          <span id="currentTime">0:00</span>
-          <span id="duration">0:00</span>
-        </div>
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+}
 
-        <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="음성 재생 위치">
+.brand > span {
+  color: #d98bb8;
+  font-size: 21px;
+}
 
-        <div class="audio-toolbar">
-          <button id="back5Button" class="audio-control-button" type="button">↶ 5초</button>
-          <button id="forward5Button" class="audio-control-button" type="button">5초 ↷</button>
-          <div class="speed-controls" role="group" aria-label="재생 속도">
-            <button class="speed-button active" data-speed="1" type="button">1배속</button>
-            <button class="speed-button" data-speed="1.5" type="button">1.5배속</button>
-            <button class="speed-button" data-speed="2" type="button">2배속</button>
-          </div>
-        </div>
+.brand h1 {
+  overflow: hidden;
+  margin: 0;
+  color: #574763;
+  font-size: 19px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-        <p id="audioStatus" class="audio-status" aria-live="polite">음성을 준비하고 있어요.</p>
-      </section>
+.icon-button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #f4d6e7;
+  border-radius: 14px;
+  color: #bd4d8b;
+  background: #ffe5f1;
+  font-size: 27px;
+  line-height: 1;
+  transition: transform 0.15s;
+}
 
-      <div class="mode-tabs" role="group" aria-label="표시할 내용">
-        <button class="mode-button active" data-mode="both" type="button">🌈 모두</button>
-        <button class="mode-button" data-mode="english" type="button">🔤 영어만</button>
-        <button class="mode-button" data-mode="korean" type="button">💗 해석만</button>
-      </div>
+.icon-button:active {
+  transform: scale(0.94);
+}
 
-      <article id="storyContent" class="story-content"></article>
+/* ========================================
+   3. 전체 레이아웃
+======================================== */
+.app {
+  width: 100%;
+  max-width: 760px;
+  min-height: calc(100vh - 100px);
+  margin: 0 auto;
+  padding: 16px 14px 28px;
+}
 
-      <section class="completion-card">
-        <div class="completion-copy">
-          <span class="completion-mascot" aria-hidden="true">🐥</span>
-          <div>
-            <strong>오늘 공부 완료했나요?</strong>
-            <p>체크한 뒤 저장하기를 눌러 주세요.</p>
-          </div>
-        </div>
+.screen {
+  width: 100%;
+}
 
-        <label class="done-toggle">
-          <input type="checkbox" id="doneCheckbox">
-          <span class="custom-check">✓</span>
-          <span id="doneLabel">완료 전</span>
-        </label>
+.screen.hidden {
+  display: none !important;
+}
 
-        <button id="saveButton" class="save-button" type="button">💾 저장하기</button>
-        <p id="saveMessage" class="save-message" aria-live="polite"></p>
-      </section>
+/* ========================================
+   4. 홈 화면 카드
+======================================== */
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  margin: 6px 0 20px;
+  padding: 24px 21px;
+  border: 1px solid #f5cfe3;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #ffe3f0, #f1e6ff 70%, #e8f8ff);
+  box-shadow: var(--shadow);
+}
 
-      <p class="small-note">※ 공부 완료 기록은 이 기기의 브라우저에 저장됩니다.</p>
-    </section>
-  </main>
+.tiny-label {
+  margin: 0 0 9px;
+  color: #a15b96;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
 
-  <footer class="footer">made with ♡ for little learners</footer>
-  <script src="script.js"></script>
-</body>
-</html>
+.hero-card h2 {
+  margin: 0;
+  color: #624b7b;
+  font-size: clamp(24px, 6vw, 31px);
+  line-height: 1.4;
+  letter-spacing: -0.8px;
+}
+
+.hero-card > p:not(.tiny-label) {
+  margin: 12px 0 0;
+  color: #796583;
+  font-size: 14px;
+}
+
+.hero-characters {
+  margin-top: 12px;
+  font-size: 30px;
+  letter-spacing: 5px;
+}
+
+/* ========================================
+   5. 학습 진도 카드
+======================================== */
+.progress-card {
+  margin: 18px 0 25px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.83);
+  box-shadow: var(--shadow);
+}
+
+.progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.progress-heading strong:first-child {
+  color: #8054a8;
+}
+
+#progressCount {
+  color: #c45f9b;
+  white-space: nowrap;
+}
+
+.progress-track {
+  overflow: hidden;
+  width: 100%;
+  height: 11px;
+  border-radius: 999px;
+  background: #f0e4f5;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f4a5ca, #b99aef);
+  transition: width 0.3s ease;
+}
+
+#progressText {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ========================================
+   6. 섹션 제목
+======================================== */
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 27px 0 17px;
+}
+
+.section-title h2 {
+  margin: 0;
+  color: #6b4c83;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.section-title > span {
+  font-size: 17px;
+}
+
+.section-title.left {
+  justify-content: flex-start;
+}
+
+.section-description {
+  margin: 0 0 15px;
+  color: #897a95;
+  font-size: 14px;
+}
+
+/* ========================================
+   7. 동화 구간 버튼
+======================================== */
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.range-button {
+  position: relative;
+  min-height: 90px;
+  padding: 15px 10px;
+  border: 1px solid #ead7f5;
+  border-radius: 20px;
+  color: #704e91;
+  background: linear-gradient(145deg, #ffffff, #fff1f8);
+  box-shadow: 0 4px 12px rgba(138, 93, 167, 0.08);
+  font-size: 16px;
+  font-weight: 800;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.range-button::before {
+  display: block;
+  margin-bottom: 5px;
+  content: attr(data-emoji);
+  font-size: 25px;
+}
+
+.range-button:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.friendly-tip {
+  margin: 21px 0 6px;
+  padding: 13px 15px;
+  border: 1px solid #f1d9e9;
+  border-radius: 16px;
+  color: #9a6b91;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ========================================
+   8. 동화 목록
+======================================== */
+.story-list {
+  display: grid;
+  gap: 10px;
+}
+
+.story-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 72px;
+  padding: 12px;
+  border: 1px solid #eadbf4;
+  border-radius: 18px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 3px 10px rgba(126, 87, 155, 0.06);
+  text-align: left;
+  transition: transform 0.15s;
+}
+
+.story-row:active {
+  transform: scale(0.985);
+}
+
+.story-number {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 14px;
+  color: #a75e9b;
+  background: #ffe5f2;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.story-meta {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.story-name {
+  overflow: hidden;
+  color: #5b4a6b;
+  font-size: 15px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.story-subtitle {
+  overflow: hidden;
+  color: #9b8ba6;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.done-mark {
+  color: #cf75a9;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* ========================================
+   9. 공부 화면 제목
+======================================== */
+.study-heading {
+  margin: 9px 0 17px;
+  padding: 10px 0 0;
+}
+
+.study-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.mini-mascot {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffe8b9, #fff0cf);
+  font-size: 30px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #a18bab;
+  font-size: 12px;
+}
+
+#studyTitle {
+  margin: 0;
+  color: #50445e;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.title-translation {
+  margin: 3px 0 0;
+  color: #9a82a7;
+  font-size: 14px;
+}
+
+/* ========================================
+   10. 영어 듣기 카드
+======================================== */
+.audio-card {
+  width: 100%;
+  margin: 12px 0 14px;
+  padding: 16px;
+  border: 1px solid #e2d0ff;
+  border-radius: 23px;
+  background: linear-gradient(140deg, #fff8ff 0%, #f4f0ff 48%, #edfff8 100%);
+  box-shadow: 0 7px 20px rgba(128, 81, 187, 0.09);
+}
+
+/* 제목 왼쪽, 재생 버튼 오른쪽 */
+.audio-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.audio-card-title {
+  color: #7540a8;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* 재생 버튼 */
+.play-button {
+  display: grid;
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+  place-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f5a8d0, #c994f1);
+  box-shadow: 0 4px 10px rgba(190, 106, 190, 0.22);
+  font-size: 20px;
+  font-weight: 800;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.play-button:active {
+  transform: scale(0.93);
+  filter: brightness(0.96);
+}
+
+/* HTML 오디오 자체는 화면에 표시하지 않음 */
+#storyAudio {
+  display: none;
+}
+
+/* 재생 시간 */
+.seek-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 4px 1px 0;
+  color: #756581;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 긴 재생 막대 */
+.seek-bar {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin: 2px 0 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: #8c4dff;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.seek-bar::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #e5d9ed;
+}
+
+.seek-bar::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -6px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background: #9257ef;
+  box-shadow: 0 2px 6px rgba(100, 63, 160, 0.25);
+  -webkit-appearance: none;
+}
+
+.seek-bar::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #e5d9ed;
+}
+
+.seek-bar::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background: #9257ef;
+  box-shadow: 0 2px 6px rgba(100, 63, 160, 0.25);
+}
+
+/* ========================================
+   11. 5초 이동 + 속도 선택 한 줄
+======================================== */
+.audio-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 5px;
+  width: 100%;
+  margin-top: 3px;
+}
+
+/* 5초 전 / 5초 후 */
+.audio-control-button {
+  display: flex;
+  min-width: 0;
+  min-height: 39px;
+  flex: 0.85 1 0;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 2px;
+  border: 1px solid #e3d0f4;
+  border-radius: 11px;
+  color: #70488e;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(115, 75, 150, 0.07);
+  font-size: clamp(10px, 2.9vw, 13px);
+  font-weight: 800;
+  white-space: nowrap;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.audio-control-button:active {
+  transform: scale(0.96);
+  background: #f5e7ff;
+}
+
+/* 속도 버튼 묶음 */
+.speed-controls {
+  display: flex;
+  min-width: 0;
+  flex: 2.5 1 0;
+  gap: 4px;
+}
+
+.speed-button {
+  min-width: 0;
+  min-height: 39px;
+  flex: 1 1 0;
+  padding: 4px 1px;
+  border: 1px solid #e3d0f4;
+  border-radius: 11px;
+  color: #70488e;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(115, 75, 150, 0.07);
+  font-size: clamp(10px, 2.8vw, 13px);
+  font-weight: 800;
+  white-space: nowrap;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.speed-button:active {
+  transform: scale(0.96);
+}
+
+.speed-button.active {
+  border-color: #a17ad8;
+  color: #ffffff;
+  background: linear-gradient(135deg, #b58af0, #9160d8);
+  box-shadow: 0 3px 8px rgba(145, 96, 216, 0.2);
+}
+
+.audio-status {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: #756581;
+  font-size: 13px;
+}
+
+/* ========================================
+   12. 모두 / 영어만 / 해석만
+======================================== */
+.mode-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 7px;
+  width: 100%;
+  margin: 13px 0 16px;
+}
+
+.mode-button {
+  display: flex;
+  min-width: 0;
+  min-height: 43px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 7px 3px;
+  border: 1px solid #ead8f5;
+  border-radius: 14px;
+  color: #79548e;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 3px 8px rgba(119, 79, 155, 0.07);
+  font-size: clamp(12px, 3.3vw, 15px);
+  font-weight: 800;
+  white-space: nowrap;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.mode-button:active {
+  transform: scale(0.96);
+}
+
+.mode-button.active {
+  border-color: #e8b4d5;
+  color: #ffffff;
+  background: linear-gradient(135deg, #f4a9cf, #c6a0f0);
+  box-shadow: 0 4px 10px rgba(203, 129, 184, 0.18);
+}
+
+/* ========================================
+   13. 영어 문장 / 한글 해석
+======================================== */
+.story-content {
+  width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.story-content p {
+  overflow-wrap: anywhere;
+}
+
+.story-content .english {
+  margin: 15px 0 5px;
+  color: #55485f;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.story-content .korean {
+  margin: 4px 0 17px;
+  color: #756580;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* script.js에서 별도 클래스 없이 p 태그를 만들 때도 기본 간격 유지 */
+.story-content p {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+/* ========================================
+   14. 공부 완료 카드 전체
+======================================== */
+.completion-card {
+  width: 100%;
+  margin: 28px 0 14px;
+  padding: 18px;
+  border: 1px solid #edcde5;
+  border-radius: 23px;
+  background: linear-gradient(145deg, #fff9fc 0%, #f7f0ff 60%, #fff3f9 100%);
+  box-shadow: 0 7px 20px rgba(145, 94, 160, 0.10);
+}
+
+/* 질문 + 설명 글씨 */
+.completion-copy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.completion-mascot {
+  display: grid;
+  width: 49px;
+  height: 49px;
+  flex: 0 0 49px;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffe6b8, #fff2d5);
+  font-size: 27px;
+}
+
+.completion-copy > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.completion-copy strong {
+  display: block;
+  color: #744c91;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.completion-copy p {
+  margin: 5px 0 0;
+  color: #93829e;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* 체크박스 영역 */
+.done-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 51px;
+  padding: 10px 12px;
+  border: 1px solid #efd9eb;
+  border-radius: 15px;
+  color: #71547e;
+  background: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.done-toggle input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.custom-check {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  place-items: center;
+  border: 2px solid #d9c3e8;
+  border-radius: 8px;
+  color: transparent;
+  background: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.done-toggle input[type="checkbox"]:checked + .custom-check {
+  border-color: #c277c1;
+  color: #ffffff;
+  background: linear-gradient(135deg, #e89bc7, #b18be9);
+}
+
+.done-toggle input[type="checkbox"]:focus-visible + .custom-check {
+  outline: 3px solid #c9a5ff;
+  outline-offset: 3px;
+}
+
+.done-toggle:has(input:checked) {
+  border-color: #dfb6e7;
+  background: #fff7ff;
+}
+
+/* 예쁜 저장 버튼 */
+.save-button {
+  display: flex;
+  width: 100%;
+  min-height: 49px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 13px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 15px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ed9fc9, #b18ae9);
+  box-shadow: 0 5px 13px rgba(174, 111, 190, 0.22);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+.save-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(174, 111, 190, 0.18);
+  filter: brightness(0.98);
+}
+
+.save-message {
+  margin: 8px 0 0;
+  color: #a45e99;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* 기기 저장 안내 */
+.small-note {
+  margin: 12px 3px 22px;
+  color: #9b8ba5;
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* ========================================
+   15. 하단 문구
+======================================== */
+.footer {
+  padding: 15px 10px 25px;
+  color: #b29ab5;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* ========================================
+   16. 모바일 화면 최적화
+======================================== */
+@media (max-width: 380px) {
+  .app {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .audio-card {
+    padding: 13px;
+  }
+
+  .audio-toolbar {
+    gap: 4px;
+  }
+
+  .audio-control-button {
+    font-size: 10px;
+  }
+
+  .speed-controls {
+    gap: 3px;
+  }
+
+  .speed-button {
+    font-size: 10px;
+  }
+
+  .mode-tabs {
+    gap: 5px;
+  }
+
+  .mode-button {
+    font-size: 12px;
+  }
+
+  .completion-card {
+    padding: 14px;
+  }
+}
+
+/* 태블릿 및 넓은 화면 */
+@media (min-width: 600px) {
+  .app {
+    padding: 24px 22px 35px;
+  }
+
+  .hero-card {
+    padding: 30px;
+  }
+
+  .range-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .audio-card {
+    padding: 20px;
+  }
+
+  .audio-control-button,
+  .speed-button {
+    min-height: 42px;
+    font-size: 14px;
+  }
+}
