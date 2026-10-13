@@ -45,6 +45,12 @@ function escapeHTML(value) {
   })[char]);
 }
 
+/* 오디오 파일 경로: 7개 폴더 자동 선택 */
+function getAudioPath(number) {
+  const folder = Math.ceil(number / 10);
+  return `audio ${folder}/s ${pad(number)}-64k.mp3`;
+}
+
 /* 완료 기록 */
 function getCompleted() {
   try {
@@ -120,7 +126,7 @@ function parseStory(text, number) {
   };
 }
 
-/* 메인 화면 구간 버튼을 먼저 표시 */
+/* 구간 버튼 표시 */
 function renderRangeButtons() {
   const grid = $("rangeGrid");
   if (!grid) {
@@ -308,7 +314,10 @@ function openStory(number) {
 
   if (audio) {
     audio.pause();
-    audio.src = `audio/s ${pad(number)}.mp3`;
+
+    // 변경된 부분: 7개 폴더와 -64k 파일명 적용
+    audio.src = getAudioPath(number);
+
     audio.playbackRate = 1;
     audio.load();
   }
@@ -470,7 +479,7 @@ function formatTime(seconds) {
   return `${minutes}:${String(remaining).padStart(2, "0")}`;
 }
 
-/* 오디오 상태 안내는 화면에 표시하지 않음 */
+/* 오디오 상태 안내 숨김 */
 function setAudioStatus(message) {
   const status = $("audioStatus");
   if (status) status.textContent = "";
@@ -650,7 +659,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupAudio();
   showScreen("home");
 
-  // 동화 파일 로딩 전에 버튼을 먼저 보여 줍니다.
   renderRangeButtons();
 
   try {
