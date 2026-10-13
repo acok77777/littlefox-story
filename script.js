@@ -1,4 +1,3 @@
-
 const TOTAL_EPISODES = 64;
 const STORAGE_KEY = "littlefoxCompleted";
 
@@ -39,7 +38,6 @@ let currentEpisode = 1;
 let currentMode = "both";
 let currentSpeed = 1;
 
-// 불러온 대본은 메모리에 보관해 반복 요청을 줄입니다.
 const storyCache = new Map();
 let completed = loadCompleted();
 
@@ -47,7 +45,9 @@ function loadCompleted() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
     return new Set(
-      saved.map(Number).filter(n => Number.isInteger(n) && n >= 1 && n <= TOTAL_EPISODES)
+      saved.map(Number).filter(
+        n => Number.isInteger(n) && n >= 1 && n <= TOTAL_EPISODES
+      )
     );
   } catch {
     return new Set();
@@ -68,6 +68,7 @@ function padEpisode(n) {
   return String(n).padStart(2, "0");
 }
 
+// 파일명에 공백이 들어간 기존 파일 구조를 유지합니다.
 function textPath(n) {
   return `data/w%20${padEpisode(n)}.txt`;
 }
@@ -84,6 +85,7 @@ function showScreen(screen) {
   screen.classList.remove("hidden");
   backButton.classList.toggle("hidden", screen === homeScreen);
   closeButton.classList.toggle("hidden", screen === homeScreen);
+
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 
@@ -93,6 +95,7 @@ function renderProgress() {
 
   $("progressCount").textContent = `${count} / ${TOTAL_EPISODES}편`;
   $("progressBar").style.width = `${percent}%`;
+
   $("progressText").textContent =
     count === TOTAL_EPISODES
       ? "축하해요! 64편을 모두 공부했어요! 🎉"
@@ -142,11 +145,13 @@ function parseStoryText(raw, n) {
       if (hangulIndex >= 0) {
         titleEn = titleLine.slice(0, hangulIndex)
           .replace(/[\s(\[（]+$/, "").trim();
+
         titleKo = titleLine.slice(hangulIndex)
           .replace(/^[\s)\]）]+/, "").trim();
       } else {
         titleEn = titleLine;
       }
+
       continue;
     }
 
@@ -245,12 +250,9 @@ function openRange(range) {
     mark.textContent = completed.has(n) ? "✓" : "○";
 
     row.append(number, meta, mark);
-
     row.addEventListener("click", () => openStory(n));
-
     storyList.appendChild(row);
 
-    // 목록에 표시할 제목을 각 대본 파일에서 가져옵니다.
     loadStory(n).then(story => {
       name.textContent = story.titleEn || `${n}편`;
       subtitle.textContent = story.titleKo
@@ -274,6 +276,7 @@ async function openStory(n) {
   $("studyTitle").textContent = "불러오는 중…";
   $("studyTitleKo").textContent = "";
   storyContent.innerHTML = "<p>대본을 불러오고 있어요…</p>";
+
   doneCheckbox.checked = completed.has(n);
   updateDoneLabel();
   saveMessage.textContent = "";
@@ -281,7 +284,11 @@ async function openStory(n) {
 
   storyAudio.removeAttribute("src");
   storyAudio.load();
-  playButton.textContent = "▶ 재생";
+
+  playButton.textContent = "▶";
+  playButton.setAttribute("aria-label", "재생");
+  playButton.title = "재생";
+
   audioStatus.textContent = "음성을 준비하고 있어요.";
   seekBar.value = 0;
   currentTimeLabel.textContent = "0:00";
@@ -302,11 +309,14 @@ async function openStory(n) {
 
     storyAudio.src = story.audio;
     storyAudio.load();
+    storyAudio.playbackRate = currentSpeed;
+
     audioStatus.textContent = "재생 버튼을 눌러 주세요.";
   } catch (error) {
     if (currentEpisode !== n) return;
 
     storyContent.innerHTML = "";
+
     const message = document.createElement("p");
     message.className = "error-message";
     message.textContent = error.message;
@@ -365,7 +375,10 @@ function formatTime(seconds) {
 
 function pauseAudio() {
   storyAudio.pause();
-  playButton.textContent = "▶ 재생";
+
+  playButton.textContent = "▶";
+  playButton.setAttribute("aria-label", "재생");
+  playButton.title = "재생";
 }
 
 async function toggleAudio() {
@@ -406,6 +419,10 @@ function setSpeed(speed) {
       Number(button.dataset.speed) === currentSpeed
     );
   });
+
+  if (!storyAudio.paused) {
+    audioStatus.textContent = `${currentSpeed}배속 재생 중`;
+  }
 }
 
 document.querySelectorAll(".mode-button").forEach(button => {
@@ -423,11 +440,13 @@ document.querySelectorAll(".speed-button").forEach(button => {
 });
 
 playButton.addEventListener("click", toggleAudio);
-$("back10Button").addEventListener("click", () => skipAudio(-10));
-$("forward10Button").addEventListener("click", () => skipAudio(10));
 
+$("back5Button").addEventListener("click", () => skipAudio(-5));
+$("forward5Button").addEventListener("click", () => skipAudio(5));
+
+// 막대기를 움직이면 선택한 위치로 이동합니다.
 seekBar.addEventListener("input", () => {
-  if (Number.isFinite(storyAudio.duration)) {
+  if (Number.isFinite(storyAudio.duration) && storyAudio.duration > 0) {
     storyAudio.currentTime =
       Number(seekBar.value) / 100 * storyAudio.duration;
   }
@@ -449,16 +468,22 @@ storyAudio.addEventListener("timeupdate", () => {
 });
 
 storyAudio.addEventListener("play", () => {
-  playButton.textContent = "⏸ 일시정지";
+  playButton.textContent = "⏸";
+  playButton.setAttribute("aria-label", "일시정지");
+  playButton.title = "일시정지";
   audioStatus.textContent = `${currentSpeed}배속 재생 중`;
 });
 
 storyAudio.addEventListener("pause", () => {
-  playButton.textContent = "▶ 재생";
+  playButton.textContent = "▶";
+  playButton.setAttribute("aria-label", "재생");
+  playButton.title = "재생";
 });
 
 storyAudio.addEventListener("ended", () => {
-  playButton.textContent = "▶ 다시 듣기";
+  playButton.textContent = "▶";
+  playButton.setAttribute("aria-label", "다시 듣기");
+  playButton.title = "다시 듣기";
   audioStatus.textContent = "음성 재생이 끝났어요.";
   seekBar.value = 100;
 });
@@ -481,11 +506,10 @@ saveButton.addEventListener("click", () => {
 
   if (saveCompleted()) {
     renderProgress();
+
     saveMessage.textContent = doneCheckbox.checked
       ? "저장했어요! 참 잘했어요 🌷"
       : "완료 체크를 해제하고 저장했어요.";
-
-    // 목록이 열릴 때 저장된 체크가 반영됩니다.
   }
 });
 
