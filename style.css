@@ -1,257 +1,136 @@
 
-* {
-  box-sizing: border-box;
-}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffb9d5">
+  <title>리틀팍스 동화 학습</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button id="backButton" class="icon-button hidden" type="button" aria-label="뒤로">‹</button>
+    <div class="brand">
+      <span aria-hidden="true">🐰</span>
+      <h1 id="pageTitle" class="visually-hidden">영어 동화 공부방</h1>
+      <span aria-hidden="true">✦</span>
+    </div>
+    <button id="closeButton" class="icon-button hidden" type="button" aria-label="목록 또는 홈으로">×</button>
+  </header>
 
-:root {
-  --pink: #f8b9d7;
-  --pink-dark: #d94e91;
-  --purple: #8051bb;
-  --purple-light: #eadcff;
-  --text: #51465f;
-  --white: #ffffff;
-}
+  <main class="app">
+    <section id="homeScreen" class="screen">
+      <div class="hero-card">
+        <p class="tiny-label">LITTLE FOX STORY TIME</p>
+        <h2>오늘도 영어랑<br>친해져 볼까요? ♡</h2>
+        <p class="hero-description">동화를 읽고, 듣고, 공부 완료를 체크해 봐요!</p>
+        <div class="hero-characters" aria-hidden="true">🐰 🐻</div>
+      </div>
 
-body {
-  margin: 0;
-  padding: 0;
-  color: var(--text);
-  font-family: Arial, "Malgun Gothic", sans-serif;
-  background: linear-gradient(160deg, #fff0f8, #f0e9ff);
-  line-height: 1.7;
-}
+      <section class="progress-card" aria-label="학습 진도">
+        <div class="progress-heading">
+          <strong>🌷 나의 학습 진도</strong>
+          <strong id="progressCount">0 / 64편</strong>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+        <p id="progressText">아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!</p>
+      </section>
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
+      <div class="section-title">
+        <span aria-hidden="true">🌷</span>
+        <h2>공부할 동화 고르기</h2>
+        <span aria-hidden="true">🌷</span>
+      </div>
 
-/* 상단 영역 */
-header,
-.top-bar,
-.nav-bar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+      <div class="range-grid" id="rangeGrid"></div>
+      <div class="friendly-tip">🐣 천천히 해도 괜찮아요. 매일 조금씩!</div>
+    </section>
 
-/* 오디오 카드 */
-.audio-card {
-  width: calc(100% - 28px);
-  margin: 12px auto 14px;
-  padding: 16px;
-  border: 1px solid #e3d0ff;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #fff8ff, #f0f8ff, #effff8);
-  box-shadow: 0 7px 20px rgba(128, 81, 187, 0.09);
-}
+    <section id="listScreen" class="screen hidden">
+      <div class="section-title left">
+        <span aria-hidden="true">📚</span>
+        <h2>동화 목록</h2>
+      </div>
+      <p class="section-description" id="listDescription"></p>
+      <div id="storyList" class="story-list"></div>
+      <div class="friendly-tip">🧸 공부를 마친 편은 체크해 두세요!</div>
+    </section>
 
-/* 영어 듣기 제목 + 재생 버튼 */
-.audio-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 5px;
-}
+    <section id="studyScreen" class="screen hidden">
+      <div class="study-heading">
+        <div class="study-title-wrap">
+          <span class="mini-mascot" aria-hidden="true">🐻</span>
+          <div class="study-title-text">
+            <p class="eyebrow" id="studyEpisode">1편</p>
+            <h2 id="studyTitle">I See</h2>
+            <p class="title-translation" id="studyTitleKo">나는 봐요</p>
+          </div>
+        </div>
+      </div>
 
-.audio-title {
-  color: #7540a8;
-  font-size: 17px;
-  font-weight: 800;
-}
+      <section class="audio-card">
+        <div class="audio-topline">
+          <div class="audio-card-title">🎧 영어 듣기</div>
+          <button id="playButton" class="play-button" type="button" aria-label="재생">▶</button>
+        </div>
 
-.play-button,
-#playButton {
-  flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: none;
-  border-radius: 15px;
-  color: white;
-  background: linear-gradient(135deg, #f6a9d0, #d99aff);
-  box-shadow: 0 4px 10px rgba(190, 106, 190, 0.22);
-  font-size: 21px;
-  font-weight: bold;
-  transition: transform 0.15s, filter 0.15s;
-}
+        <audio id="storyAudio" preload="metadata"></audio>
 
-.play-button:active,
-#playButton:active {
-  transform: scale(0.94);
-  filter: brightness(0.96);
-}
+        <div class="seek-labels">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
 
-/* 시간 표시 */
-.audio-time,
-#timeDisplay,
-#currentTime,
-#duration {
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-}
+        <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="음성 재생 위치">
 
-/* 재생 막대기 길게 */
-.audio-progress,
-.progress-container {
-  width: 100%;
-  margin: 8px 0 12px;
-}
+        <div class="audio-toolbar">
+          <button id="back5Button" class="audio-control-button" type="button">↶ 5초</button>
+          <button id="forward5Button" class="audio-control-button" type="button">5초 ↷</button>
+          <div class="speed-controls" role="group" aria-label="재생 속도">
+            <button class="speed-button active" data-speed="1" type="button">1배속</button>
+            <button class="speed-button" data-speed="1.5" type="button">1.5배속</button>
+            <button class="speed-button" data-speed="2" type="button">2배속</button>
+          </div>
+        </div>
 
-.audio-progress input[type="range"],
-.progress-container input[type="range"],
-input[type="range"]#progressBar,
-#progressBar {
-  display: block;
-  width: 100%;
-  height: 12px;
-  margin: 8px 0 12px;
-  accent-color: #8c4dff;
-  cursor: pointer;
-}
+        <p id="audioStatus" class="audio-status" aria-live="polite">음성을 준비하고 있어요.</p>
+      </section>
 
-/* 오디오 조작 버튼 한 줄 */
-.audio-controls,
-.audio-buttons,
-.playback-controls {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 5px;
-  width: 100%;
-  margin-top: 8px;
-}
+      <div class="mode-tabs" role="group" aria-label="표시할 내용">
+        <button class="mode-button active" data-mode="both" type="button">🌈 모두</button>
+        <button class="mode-button" data-mode="english" type="button">🔤 영어만</button>
+        <button class="mode-button" data-mode="korean" type="button">💗 해석만</button>
+      </div>
 
-.audio-controls button,
-.audio-buttons button,
-.playback-controls button,
-#back5Button,
-#forward5Button,
-.speed-button {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 38px;
-  padding: 5px 3px;
-  border: 1px solid #e5c8f8;
-  border-radius: 12px;
-  color: #69418d;
-  background: #ffffff;
-  box-shadow: 0 2px 5px rgba(115, 75, 150, 0.08);
-  font-size: clamp(11px, 3.2vw, 14px);
-  font-weight: 700;
-  white-space: nowrap;
-  transition: background 0.15s, transform 0.15s;
-}
+      <article id="storyContent" class="story-content"></article>
 
-.audio-controls button:active,
-.audio-buttons button:active,
-.playback-controls button:active,
-#back5Button:active,
-#forward5Button:active,
-.speed-button:active {
-  transform: scale(0.96);
-  background: #f5e7ff;
-}
+      <section class="completion-card">
+        <div class="completion-copy">
+          <span class="completion-mascot" aria-hidden="true">🐥</span>
+          <div>
+            <strong>오늘 공부 완료했나요?</strong>
+            <p>체크한 뒤 저장하기를 눌러 주세요.</p>
+          </div>
+        </div>
 
-/* 선택된 재생속도 */
-.audio-controls button.active,
-.audio-buttons button.active,
-.playback-controls button.active,
-.speed-button.active,
-button.selected {
-  color: white;
-  border-color: #9660d3;
-  background: linear-gradient(135deg, #b58af0, #9160d8);
-}
+        <label class="done-toggle">
+          <input type="checkbox" id="doneCheckbox">
+          <span class="custom-check">✓</span>
+          <span id="doneLabel">완료 전</span>
+        </label>
 
-/* 모두 / 영어만 / 해석만 버튼 */
-.view-buttons,
-.display-buttons,
-.mode-buttons {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 7px;
-  width: calc(100% - 28px);
-  margin: 12px auto;
-}
+        <button id="saveButton" class="save-button" type="button">💾 저장하기</button>
+        <p id="saveMessage" class="save-message" aria-live="polite"></p>
+      </section>
 
-.view-buttons button,
-.display-buttons button,
-.mode-buttons button,
-#showAllButton,
-#englishOnlyButton,
-#koreanOnlyButton {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 42px;
-  padding: 7px 4px;
-  border: 1px solid #e7d3fa;
-  border-radius: 14px;
-  color: #70468f;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 3px 8px rgba(119, 79, 155, 0.08);
-  font-size: clamp(12px, 3.4vw, 15px);
-  font-weight: 800;
-  white-space: nowrap;
-}
+      <p class="small-note">※ 공부 완료 기록은 이 기기의 브라우저에 저장됩니다.</p>
+    </section>
+  </main>
 
-.view-buttons button.active,
-.display-buttons button.active,
-.mode-buttons button.active,
-#showAllButton.active,
-#englishOnlyButton.active,
-#koreanOnlyButton.active {
-  color: #ffffff;
-  border-color: #d66da8;
-  background: linear-gradient(135deg, #f5a8d0, #c99cf5);
-}
-
-/* 영어 문장과 한글 해석 */
-.sentence,
-.english,
-.korean,
-p {
-  overflow-wrap: anywhere;
-}
-
-.english {
-  margin: 14px 0 3px;
-  font-size: 17px;
-  color: #51465f;
-}
-
-.korean {
-  margin: 3px 0 15px;
-  font-size: 17px;
-  color: #655872;
-}
-
-/* 일반 버튼 */
-button:not(#playButton):not(#back5Button):not(#forward5Button) {
-  -webkit-appearance: none;
-}
-
-/* 작은 화면에서도 버튼 5개 한 줄 유지 */
-@media (max-width: 380px) {
-  .audio-card {
-    padding: 13px;
-  }
-
-  .audio-controls,
-  .audio-buttons,
-  .playback-controls {
-    gap: 4px;
-  }
-
-  .audio-controls button,
-  .audio-buttons button,
-  .playback-controls button,
-  #back5Button,
-  #forward5Button,
-  .speed-button {
-    font-size: 11px;
-    padding: 4px 1px;
-  }
-}
+  <footer class="footer">made with ♡ for little learners</footer>
+  <script src="script.js"></script>
+</body>
+</html>
