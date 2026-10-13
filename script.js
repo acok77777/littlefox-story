@@ -1,358 +1,443 @@
-const TOTAL_EPISODES = 64;
-const STORAGE_KEY = "littlefoxCompleted";
 
-const ranges = [
-  { label: "1 - 10편", start: 1, end: 10, emoji: "🐰" },
-  { label: "11 - 20편", start: 11, end: 20, emoji: "🐻" },
-  { label: "21 - 30편", start: 21, end: 30, emoji: "🐣" },
-  { label: "31 - 40편", start: 31, end: 40, emoji: "🦊" },
-  { label: "41 - 50편", start: 41, end: 50, emoji: "🐼" },
-  { label: "51 - 64편", start: 51, end: 64, emoji: "🐸" }
+"use strict";
+
+/* =========================
+   설정
+========================= */
+const TOTAL_STORIES = 64;
+const COMPLETED_KEY = "littlefoxCompleted";
+
+const RANGES = [
+  { start: 1, end: 10, label: "🌸 1~10편", subtitle: "첫걸음 동화" },
+  { start: 11, end: 20, label: "🩵 11~20편", subtitle: "쑥쑥 성장 동화" },
+  { start: 21, end: 30, label: "🌿 21~30편", subtitle: "즐거운 영어 동화" },
+  { start: 31, end: 40, label: "🌼 31~40편", subtitle: "재미있는 이야기" },
+  { start: 41, end: 50, label: "💜 41~50편", subtitle: "신나는 영어 여행" },
+  { start: 51, end: 64, label: "🍊 51~64편", subtitle: "마지막 동화까지" }
 ];
 
-const $ = id => document.getElementById(id);
+const COLORS = [
+  "story-color-pink",
+  "story-color-blue",
+  "story-color-green",
+  "story-color-yellow",
+  "story-color-purple",
+  "story-color-orange"
+];
 
-const homeScreen = $("homeScreen");
-const listScreen = $("listScreen");
-const studyScreen = $("studyScreen");
-const pageTitle = $("pageTitle");
-const backButton = $("backButton");
-const closeButton = $("closeButton");
-const rangeGrid = $("rangeGrid");
-const storyList = $("storyList");
-const listDescription = $("listDescription");
-const storyContent = $("storyContent");
-const storyAudio = $("storyAudio");
-const playButton = $("playButton");
-const audioStatus = $("audioStatus");
-const seekBar = $("seekBar");
-const currentTimeLabel = $("currentTime");
-const durationLabel = $("duration");
-const doneCheckbox = $("doneCheckbox");
-const doneLabel = $("doneLabel");
-const saveButton = $("saveButton");
-const saveMessage = $("saveMessage");
+const $ = (id) => document.getElementById(id);
 
-let currentRange = ranges[0];
-let currentEpisode = 1;
+let stories = [];
+let currentStory = null;
+let currentRange = RANGES[0];
+let currentScreen = "home";
 let currentMode = "both";
-let currentSpeed = 1;
+let pendingCompleted = false;
 
-const storyCache = new Map();
-let completed = loadCompleted();
+/* =========================
+   공통 함수
+========================= */
+function pad(number) {
+  return String(number).padStart(2, "0");
+}
 
-function loadCompleted() {
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function getCompleted() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    return new Set(
-      saved.map(Number).filter(
-        n => Number.isInteger(n) && n >= 1 && n <= TOTAL_EPISODES
-      )
-    );
+    const saved = JSON.parse(localStorage.getItem(COMPLETED_KEY) || "[]");
+
+    if (!Array.isArray(saved)) return [];
+
+    return saved
+      .map(Number)
+      .filter((number) =>
+        Number.isInteger(number) &&
+        number >= 1 &&
+        number <= TOTAL_STORIES
+      );
   } catch {
-    return new Set();
+    return [];
   }
 }
 
-function saveCompleted() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
-    return true;
-  } catch {
-    alert("저장 공간을 사용할 수 없어요. 브라우저 설정을 확인해 주세요.");
-    return false;
+function setCompleted(completed) {
+  localStorage.setItem(
+    COMPLETED_KEY,
+    JSON.stringify([...new Set(completed)].sort((a, b) => a - b))
+  );
+}
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return "0:00";
   }
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
-function padEpisode(n) {
-  return String(n).padStart(2, "0");
-}
-
-// 파일명에 공백이 들어간 기존 파일 구조를 유지합니다.
-function textPath(n) {
-  return `data/w%20${padEpisode(n)}.txt`;
-}
-
-function audioPath(n) {
-  return `audio/s%20${padEpisode(n)}.mp3`;
-}
-
-function showScreen(screen) {
-  [homeScreen, listScreen, studyScreen].forEach(s => {
-    s.classList.add("hidden");
-  });
-
-  screen.classList.remove("hidden");
-  backButton.classList.toggle("hidden", screen === homeScreen);
-  closeButton.classList.toggle("hidden", screen === homeScreen);
-
-  window.scrollTo({ top: 0, behavior: "auto" });
-}
-
-function renderProgress() {
-  const count = completed.size;
-  const percent = Math.round(count / TOTAL_EPISODES * 100);
-
-  $("progressCount").textContent = `${count} / ${TOTAL_EPISODES}편`;
-  $("progressBar").style.width = `${percent}%`;
-
-  $("progressText").textContent =
-    count === TOTAL_EPISODES
-      ? "축하해요! 64편을 모두 공부했어요! 🎉"
-      : count === 0
-        ? "아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!"
-        : `전체의 ${percent}%를 공부했어요. 조금씩 계속해 봐요! 🌷`;
-}
-
-function renderRanges() {
-  rangeGrid.innerHTML = "";
-
-  ranges.forEach(range => {
-    const button = document.createElement("button");
-    button.className = "range-button";
-    button.dataset.emoji = range.emoji;
-    button.textContent = range.label;
-    button.addEventListener("click", () => openRange(range));
-    rangeGrid.appendChild(button);
-  });
-}
-
-// 대본 형식:
-// 1번
-// 제목: I See 나는 봐요
-//
-// I see a rock.
-// 나는 바위를 봐요.
-function parseStoryText(raw, n) {
-  const lines = raw
+/* =========================
+   텍스트 파일 읽기
+========================= */
+function parseStory(text, number) {
+  const lines = text
     .replace(/^\uFEFF/, "")
-    .split(/\r?\n/)
-    .map(s => s.trim())
-    .filter(Boolean);
+    .replace(/\r/g, "")
+    .split("\n");
 
-  let titleEn = "";
+  let titleEn = `Story ${number}`;
   let titleKo = "";
-  const body = [];
+  let titleFound = false;
+  const content = [];
 
-  for (const line of lines) {
-    if (/^\d+\s*번$/.test(line)) continue;
-    if (/^\d+\s*편$/.test(line)) continue;
+  for (const originalLine of lines) {
+    const line = originalLine.trim();
 
-    if (line.startsWith("제목:")) {
-      const titleLine = line.replace(/^제목:\s*/, "").trim();
-      const hangulIndex = titleLine.search(/[가-힣]/);
+    if (!line) continue;
 
-      if (hangulIndex >= 0) {
-        titleEn = titleLine.slice(0, hangulIndex)
-          .replace(/[\s(\[（]+$/, "").trim();
+    const titleMatch = line.match(/^제목\s*:\s*(.+)$/i);
 
-        titleKo = titleLine.slice(hangulIndex)
-          .replace(/^[\s)\]）]+/, "").trim();
+    if (titleMatch) {
+      const title = titleMatch[1].trim();
+
+      /*
+       * 제목 예시:
+       * I See 나는 봐요
+       */
+      const koreanIndex = title.search(/[가-힣]/);
+
+      if (koreanIndex >= 0) {
+        titleEn = title.slice(0, koreanIndex).trim();
+        titleKo = title.slice(koreanIndex).trim();
       } else {
-        titleEn = titleLine;
+        titleEn = title;
       }
 
+      titleFound = true;
       continue;
     }
 
-    body.push(line);
+    /*
+     * 본문에 들어간 단독 번호 제거
+     */
+    if (/^\d+\s*[.)]?$/.test(line)) continue;
+
+    content.push(line);
   }
 
-  const parsedLines = [];
-
-  for (let i = 0; i < body.length; i++) {
-    const line = body[i];
-
-    if (/[A-Za-z]/.test(line)) {
-      const next = body[i + 1] || "";
-
-      if (/[가-힣]/.test(next)) {
-        parsedLines.push({ en: line, ko: next });
-        i++;
-      } else {
-        parsedLines.push({ en: line, ko: "" });
-      }
-    } else if (/[가-힣]/.test(line) && parsedLines.length) {
-      const last = parsedLines[parsedLines.length - 1];
-      if (!last.ko) last.ko = line;
-    }
-  }
-
-  if (!titleEn && parsedLines.length) {
-    titleEn = `Episode ${n}`;
+  /*
+   * 제목 줄이 없더라도 첫 문장으로
+   * 제목을 추측하지 않고 기본 제목을 사용
+   */
+  if (!titleFound) {
+    titleEn = `Story ${number}`;
   }
 
   return {
-    episode: n,
-    titleEn,
+    number,
+    titleEn: titleEn || `Story ${number}`,
     titleKo,
-    audio: audioPath(n),
-    lines: parsedLines
+    content
   };
 }
 
-async function loadStory(n, force = false) {
-  if (!force && storyCache.has(n)) {
-    return storyCache.get(n);
-  }
-
-  const response = await fetch(textPath(n), { cache: "no-store" });
+async function fetchStory(number) {
+  const response = await fetch(`data/w ${pad(number)}.txt`);
 
   if (!response.ok) {
-    throw new Error(
-      `${n}편 대본 파일을 찾을 수 없습니다. 파일명과 data 폴더를 확인해 주세요.`
+    throw new Error(`w ${pad(number)}.txt 파일을 읽을 수 없습니다.`);
+  }
+
+  const text = await response.text();
+  return parseStory(text, number);
+}
+
+async function loadAllStories() {
+  const results = await Promise.allSettled(
+    Array.from(
+      { length: TOTAL_STORIES },
+      (_, index) => fetchStory(index + 1)
+    )
+  );
+
+  stories = results
+    .filter((result) => result.status === "fulfilled")
+    .map((result) => result.value)
+    .sort((a, b) => a.number - b.number);
+
+  renderRangeButtons();
+  updateProgress();
+
+  if (stories.length === 0) {
+    const grid = $("rangeGrid");
+
+    if (grid) {
+      grid.innerHTML = `
+        <p class="load-error">
+          동화 파일을 읽지 못했어요.<br>
+          data 폴더와 파일 이름을 확인해 주세요.
+        </p>
+      `;
+    }
+
+    return;
+  }
+
+  if (stories.length < TOTAL_STORIES) {
+    console.warn(
+      `${TOTAL_STORIES}편 중 ${stories.length}편을 불러왔습니다.`
     );
   }
+}
 
-  const raw = await response.text();
-  const story = parseStoryText(raw, n);
+/* =========================
+   화면 이동
+========================= */
+function showScreen(screenName) {
+  currentScreen = screenName;
 
-  if (!story.lines.length) {
-    throw new Error(`${n}편 대본에서 영어 문장을 찾지 못했습니다.`);
+  $("homeScreen")?.classList.toggle(
+    "hidden",
+    screenName !== "home"
+  );
+
+  $("listScreen")?.classList.toggle(
+    "hidden",
+    screenName !== "list"
+  );
+
+  $("studyScreen")?.classList.toggle(
+    "hidden",
+    screenName !== "study"
+  );
+
+  $("backButton")?.classList.toggle(
+    "hidden",
+    screenName === "home"
+  );
+
+  $("closeButton")?.classList.toggle(
+    "hidden",
+    screenName === "home"
+  );
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function goBack() {
+  if (currentScreen === "study") {
+    const audio = $("storyAudio");
+    audio?.pause();
+    showScreen("list");
+  } else if (currentScreen === "list") {
+    showScreen("home");
   }
+}
 
-  storyCache.set(n, story);
-  return story;
+function goHome() {
+  const audio = $("storyAudio");
+  audio?.pause();
+  showScreen("home");
+}
+
+/* =========================
+   메인 구간 버튼
+========================= */
+function renderRangeButtons() {
+  const grid = $("rangeGrid");
+  if (!grid) return;
+
+  grid.innerHTML = RANGES.map((range, index) => {
+    const count = stories.filter(
+      (story) =>
+        story.number >= range.start &&
+        story.number <= range.end
+    ).length;
+
+    return `
+      <button
+        type="button"
+        class="range-button range-color-${index + 1}"
+        data-range="${index}"
+      >
+        <span class="range-label">${escapeHTML(range.label)}</span>
+        <span class="range-subtitle">
+          ${escapeHTML(range.subtitle)}
+        </span>
+        <span class="range-count">${count}편의 동화</span>
+      </button>
+    `;
+  }).join("");
+
+  grid.querySelectorAll("[data-range]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.range);
+      openRange(RANGES[index]);
+    });
+  });
 }
 
 function openRange(range) {
   currentRange = range;
-  pageTitle.textContent = range.label;
-  listDescription.textContent =
-    `${range.start}편부터 ${range.end}편까지 골라 보세요.`;
 
-  storyList.innerHTML = "";
+  const description = $("listDescription");
 
-  for (let n = range.start; n <= range.end; n++) {
-    const row = document.createElement("button");
-    row.className = "story-row";
-    row.type = "button";
-
-    const number = document.createElement("span");
-    number.className = "story-number";
-    number.textContent = n;
-
-    const meta = document.createElement("span");
-    meta.className = "story-meta";
-
-    const name = document.createElement("span");
-    name.className = "story-name";
-    name.textContent = `${n}편`;
-
-    const subtitle = document.createElement("span");
-    subtitle.className = "story-subtitle";
-    subtitle.textContent = "대본 불러오는 중…";
-
-    meta.append(name, subtitle);
-
-    const mark = document.createElement("span");
-    mark.className = "done-mark";
-    mark.textContent = completed.has(n) ? "✓" : "○";
-
-    row.append(number, meta, mark);
-    row.addEventListener("click", () => openStory(n));
-    storyList.appendChild(row);
-
-    loadStory(n).then(story => {
-      name.textContent = story.titleEn || `${n}편`;
-      subtitle.textContent = story.titleKo
-        ? `${story.titleKo} · 영어 동화`
-        : "영어 동화 · 눌러서 공부하기";
-    }).catch(() => {
-      name.textContent = `${n}편`;
-      subtitle.textContent = "파일을 추가하면 공부할 수 있어요";
-    });
+  if (description) {
+    description.textContent =
+      `${range.start}편부터 ${range.end}편까지 골라 보세요.`;
   }
 
-  showScreen(listScreen);
+  renderStoryList();
+  showScreen("list");
 }
 
-async function openStory(n) {
-  pauseAudio();
-  currentEpisode = n;
+/* =========================
+   동화 목록
+========================= */
+function renderStoryList() {
+  const list = $("storyList");
+  if (!list) return;
 
-  pageTitle.textContent = `${n}편`;
-  $("studyEpisode").textContent = `${n}편`;
-  $("studyTitle").textContent = "불러오는 중…";
-  $("studyTitleKo").textContent = "";
-  storyContent.innerHTML = "<p>대본을 불러오고 있어요…</p>";
+  const completed = getCompleted();
 
-  doneCheckbox.checked = completed.has(n);
-  updateDoneLabel();
-  saveMessage.textContent = "";
+  const filteredStories = stories.filter(
+    (story) =>
+      story.number >= currentRange.start &&
+      story.number <= currentRange.end
+  );
+
+  list.innerHTML = filteredStories.map((story, index) => {
+    const isDone = completed.includes(story.number);
+    const color = COLORS[index % COLORS.length];
+    const isActive = currentStory?.number === story.number;
+
+    return `
+      <button
+        type="button"
+        class="story-item ${color} ${isActive ? "active" : ""}"
+        data-story="${story.number}"
+        aria-pressed="${isActive}"
+      >
+        <span class="story-number">${pad(story.number)}</span>
+
+        <span class="story-title-area">
+          <span class="story-title-en">
+            ${escapeHTML(story.titleEn)}
+          </span>
+          <span class="story-subtitle">
+            ${escapeHTML(story.titleKo)}
+          </span>
+        </span>
+
+        <span class="story-done" aria-label="${isDone ? "학습 완료" : "미완료"}">
+          ${isDone ? "⭐" : "📖"}
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  list.querySelectorAll("[data-story]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const number = Number(button.dataset.story);
+      openStory(number);
+    });
+  });
+}
+
+/* =========================
+   동화 학습 화면
+========================= */
+function openStory(number) {
+  const story = stories.find((item) => item.number === number);
+  if (!story) return;
+
+  currentStory = story;
+  pendingCompleted = getCompleted().includes(number);
   currentMode = "both";
 
-  storyAudio.removeAttribute("src");
-  storyAudio.load();
+  const episode = $("studyEpisode");
+  const title = $("studyTitle");
+  const titleKo = $("studyTitleKo");
 
-  playButton.textContent = "▶";
-  playButton.setAttribute("aria-label", "재생");
-  playButton.title = "재생";
+  if (episode) episode.textContent = `${number}편`;
+  if (title) title.textContent = story.titleEn;
+  if (titleKo) titleKo.textContent = story.titleKo;
 
-  audioStatus.textContent = "음성을 준비하고 있어요.";
-  seekBar.value = 0;
-  currentTimeLabel.textContent = "0:00";
-  durationLabel.textContent = "0:00";
+  renderStoryContent(story);
+  updateCompletionUI();
+  updateModeButtons();
 
-  showScreen(studyScreen);
+  const audio = $("storyAudio");
 
-  try {
-    const story = await loadStory(n);
-
-    // 다른 편을 빠르게 눌렀을 때 이전 요청이 화면을 덮지 않게 합니다.
-    if (currentEpisode !== n) return;
-
-    $("studyTitle").textContent = story.titleEn || `${n}편`;
-    $("studyTitleKo").textContent = story.titleKo || "해석 제목 없음";
-
-    renderLines(story);
-
-    storyAudio.src = story.audio;
-    storyAudio.load();
-    storyAudio.playbackRate = currentSpeed;
-
-    audioStatus.textContent = "재생 버튼을 눌러 주세요.";
-  } catch (error) {
-    if (currentEpisode !== n) return;
-
-    storyContent.innerHTML = "";
-
-    const message = document.createElement("p");
-    message.className = "error-message";
-    message.textContent = error.message;
-    storyContent.appendChild(message);
-
-    $("studyTitle").textContent = `${n}편`;
-    $("studyTitleKo").textContent = "";
-    audioStatus.textContent = "대본 파일을 확인해 주세요.";
+  if (audio) {
+    audio.pause();
+    audio.src = `audio/s ${pad(number)}.mp3`;
+    audio.playbackRate = 1;
+    audio.load();
   }
-}
 
-function renderLines(story) {
-  storyContent.innerHTML = "";
-
-  story.lines.forEach(line => {
-    const item = document.createElement("div");
-    item.className = "sentence";
-
-    if (currentMode !== "korean" && line.en) {
-      const en = document.createElement("p");
-      en.className = "english";
-      en.textContent = line.en;
-      item.appendChild(en);
-    }
-
-    if (currentMode !== "english" && line.ko) {
-      const ko = document.createElement("p");
-      ko.className = "korean";
-      ko.textContent = line.ko;
-      item.appendChild(ko);
-    }
-
-    storyContent.appendChild(item);
+  document.querySelectorAll(".speed-button").forEach((button) => {
+    button.classList.toggle(button.dataset.speed === "1", "active");
   });
 
-  document.querySelectorAll(".mode-button").forEach(button => {
+  setAudioStatus("음성을 준비하고 있어요.");
+  updateAudioTime();
+
+  renderStoryList();
+  showScreen("study");
+}
+
+function renderStoryContent(story) {
+  const contentElement = $("storyContent");
+  if (!contentElement) return;
+
+  contentElement.innerHTML = story.content.map((line) => {
+    const isKorean = /[가-힣]/.test(line);
+    const type = isKorean ? "korean" : "english";
+
+    return `
+      <p class="story-line ${type}">
+        ${escapeHTML(line)}
+      </p>
+    `;
+  }).join("");
+
+  applyLanguageMode();
+}
+
+function applyLanguageMode() {
+  const content = $("storyContent");
+  if (!content) return;
+
+  content.querySelectorAll(".story-line").forEach((line) => {
+    if (currentMode === "both") {
+      line.style.display = "";
+    } else if (currentMode === "english") {
+      line.style.display =
+        line.classList.contains("english") ? "" : "none";
+    } else {
+      line.style.display =
+        line.classList.contains("korean") ? "" : "none";
+    }
+  });
+}
+
+function updateModeButtons() {
+  document.querySelectorAll(".mode-button").forEach((button) => {
     button.classList.toggle(
       "active",
       button.dataset.mode === currentMode
@@ -360,176 +445,282 @@ function renderLines(story) {
   });
 }
 
-function updateDoneLabel() {
-  doneLabel.textContent = doneCheckbox.checked ? "공부 완료 ✓" : "완료 전";
-}
+/* =========================
+   학습 완료 저장
+========================= */
+function updateCompletionUI() {
+  const checkbox = $("doneCheckbox");
+  const label = $("doneLabel");
+  const message = $("saveMessage");
 
-function formatTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  if (checkbox) checkbox.checked = pendingCompleted;
 
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-
-  return `${mins}:${String(secs).padStart(2, "0")}`;
-}
-
-function pauseAudio() {
-  storyAudio.pause();
-
-  playButton.textContent = "▶";
-  playButton.setAttribute("aria-label", "재생");
-  playButton.title = "재생";
-}
-
-async function toggleAudio() {
-  if (!storyAudio.getAttribute("src")) {
-    audioStatus.textContent = "먼저 대본과 음성 파일을 확인해 주세요.";
-    return;
+  if (label) {
+    label.textContent = pendingCompleted ? "완료했어요! ⭐" : "완료 전";
   }
 
-  if (!storyAudio.paused) {
-    pauseAudio();
-    audioStatus.textContent = "일시정지했어요.";
-    return;
+  if (message) message.textContent = "";
+}
+
+function saveCurrentCompletion() {
+  if (!currentStory) return;
+
+  let completed = getCompleted();
+
+  if (pendingCompleted) {
+    if (!completed.includes(currentStory.number)) {
+      completed.push(currentStory.number);
+    }
+  } else {
+    completed = completed.filter(
+      (number) => number !== currentStory.number
+    );
   }
 
-  try {
-    await storyAudio.play();
-  } catch {
-    audioStatus.textContent = "재생할 수 없어요. MP3 파일 경로를 확인해 주세요.";
+  setCompleted(completed);
+
+  updateCompletionUI();
+  updateProgress();
+  renderStoryList();
+
+  const message = $("saveMessage");
+
+  if (message) {
+    message.textContent = pendingCompleted
+      ? "🎉 공부 완료를 저장했어요!"
+      : "완료 체크를 해제했어요.";
+  }
+}
+
+function updateProgress() {
+  const completed = getCompleted();
+  const count = completed.length;
+
+  const countElement = $("progressCount");
+  if (countElement) {
+    countElement.textContent = `${count} / ${TOTAL_STORIES}편`;
+  }
+
+  const progressBar = $("progressBar");
+  if (progressBar) {
+    progressBar.style.width = `${(count / TOTAL_STORIES) * 100}%`;
+    progressBar.setAttribute("role", "progressbar");
+    progressBar.setAttribute("aria-valuemin", "0");
+    progressBar.setAttribute("aria-valuemax", String(TOTAL_STORIES));
+    progressBar.setAttribute("aria-valuenow", String(count));
+  }
+
+  const text = $("progressText");
+
+  if (text) {
+    if (count === 0) {
+      text.textContent =
+        "아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!";
+    } else if (count === TOTAL_STORIES) {
+      text.textContent =
+        "🎉 축하해요! 64편을 모두 공부했어요!";
+    } else {
+      text.textContent =
+        `정말 잘하고 있어요! ${count}편을 완료했어요. 🌷`;
+    }
+  }
+}
+
+/* =========================
+   오디오 제어
+========================= */
+function setAudioStatus(message) {
+  const status = $("audioStatus");
+  if (status) status.textContent = message;
+}
+
+function updateAudioTime() {
+  const audio = $("storyAudio");
+  if (!audio) return;
+
+  const currentTime = $("currentTime");
+  const duration = $("duration");
+  const seekBar = $("seekBar");
+
+  if (currentTime) {
+    currentTime.textContent = formatTime(audio.currentTime);
+  }
+
+  if (duration) {
+    duration.textContent = formatTime(audio.duration);
+  }
+
+  if (seekBar) {
+    seekBar.max = Number.isFinite(audio.duration) && audio.duration > 0
+      ? audio.duration
+      : 100;
+
+    if (!seekBar.matches(":active")) {
+      seekBar.value = Number.isFinite(audio.duration) && audio.duration > 0
+        ? audio.currentTime
+        : 0;
+    }
+  }
+}
+
+async function togglePlayback() {
+  const audio = $("storyAudio");
+  if (!audio || !currentStory) return;
+
+  if (audio.paused) {
+    try {
+      await audio.play();
+      setAudioStatus("🎧 동화를 듣고 있어요.");
+    } catch (error) {
+      setAudioStatus(
+        "음성을 재생할 수 없어요. audio 폴더와 파일 이름을 확인해 주세요."
+      );
+    }
+  } else {
+    audio.pause();
   }
 }
 
 function skipAudio(seconds) {
-  if (!Number.isFinite(storyAudio.duration)) return;
+  const audio = $("storyAudio");
+  if (!audio) return;
 
-  storyAudio.currentTime = Math.max(
+  const duration = Number.isFinite(audio.duration)
+    ? audio.duration
+    : Infinity;
+
+  audio.currentTime = Math.max(
     0,
-    Math.min(storyAudio.duration, storyAudio.currentTime + seconds)
+    Math.min(audio.currentTime + seconds, duration)
   );
+
+  updateAudioTime();
 }
 
-function setSpeed(speed) {
-  currentSpeed = Number(speed);
-  storyAudio.playbackRate = currentSpeed;
+function setPlaybackSpeed(speed) {
+  const audio = $("storyAudio");
+  if (audio) audio.playbackRate = speed;
 
-  document.querySelectorAll(".speed-button").forEach(button => {
+  document.querySelectorAll(".speed-button").forEach((button) => {
     button.classList.toggle(
       "active",
-      Number(button.dataset.speed) === currentSpeed
+      Number(button.dataset.speed) === speed
     );
   });
-
-  if (!storyAudio.paused) {
-    audioStatus.textContent = `${currentSpeed}배속 재생 중`;
-  }
 }
 
-document.querySelectorAll(".mode-button").forEach(button => {
-  button.addEventListener("click", () => {
-    currentMode = button.dataset.mode;
-    const story = storyCache.get(currentEpisode);
-    if (story) renderLines(story);
+function setupAudio() {
+  const audio = $("storyAudio");
+  if (!audio) return;
+
+  $("playButton")?.addEventListener("click", togglePlayback);
+
+  $("back5Button")?.addEventListener("click", () => {
+    skipAudio(-5);
   });
-});
 
-document.querySelectorAll(".speed-button").forEach(button => {
-  button.addEventListener("click", () => {
-    setSpeed(button.dataset.speed);
+  $("forward5Button")?.addEventListener("click", () => {
+    skipAudio(5);
   });
-});
 
-playButton.addEventListener("click", toggleAudio);
+  $("seekBar")?.addEventListener("input", (event) => {
+    const value = Number(event.target.value);
 
-$("back5Button").addEventListener("click", () => skipAudio(-5));
-$("forward5Button").addEventListener("click", () => skipAudio(5));
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      audio.currentTime = value;
+      updateAudioTime();
+    }
+  });
 
-// 막대기를 움직이면 선택한 위치로 이동합니다.
-seekBar.addEventListener("input", () => {
-  if (Number.isFinite(storyAudio.duration) && storyAudio.duration > 0) {
-    storyAudio.currentTime =
-      Number(seekBar.value) / 100 * storyAudio.duration;
+  document.querySelectorAll(".speed-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      setPlaybackSpeed(Number(button.dataset.speed));
+    });
+  });
+
+  audio.addEventListener("loadedmetadata", updateAudioTime);
+  audio.addEventListener("timeupdate", updateAudioTime);
+
+  audio.addEventListener("play", () => {
+    const button = $("playButton");
+    if (button) {
+      button.textContent = "Ⅱ";
+      button.setAttribute("aria-label", "일시정지");
+    }
+  });
+
+  audio.addEventListener("pause", () => {
+    const button = $("playButton");
+    if (button) {
+      button.textContent = "▶";
+      button.setAttribute("aria-label", "재생");
+    }
+  });
+
+  audio.addEventListener("ended", () => {
+    setAudioStatus("🌷 잘 들었어요! 한 번 더 들어도 좋아요.");
+  });
+
+  audio.addEventListener("error", () => {
+    setAudioStatus(
+      "음성 파일을 찾을 수 없어요. audio/s 번호.mp3 파일을 확인해 주세요."
+    );
+  });
+}
+
+/* =========================
+   이벤트 연결
+========================= */
+function setupEvents() {
+  $("backButton")?.addEventListener("click", goBack);
+  $("closeButton")?.addEventListener("click", goHome);
+
+  $("doneCheckbox")?.addEventListener("change", (event) => {
+    pendingCompleted = event.target.checked;
+
+    const label = $("doneLabel");
+    if (label) {
+      label.textContent = pendingCompleted ? "완료했어요! ⭐" : "완료 전";
+    }
+
+    const message = $("saveMessage");
+    if (message) {
+      message.textContent = "변경 사항을 저장하려면 저장하기를 눌러 주세요.";
+    }
+  });
+
+  $("saveButton")?.addEventListener("click", saveCurrentCompletion);
+
+  document.querySelectorAll(".mode-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      currentMode = button.dataset.mode;
+      applyLanguageMode();
+      updateModeButtons();
+    });
+  });
+}
+
+/* =========================
+   시작
+========================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  setupEvents();
+  setupAudio();
+  showScreen("home");
+
+  try {
+    await loadAllStories();
+  } catch (error) {
+    console.error("동화 초기화 오류:", error);
+
+    const grid = $("rangeGrid");
+    if (grid) {
+      grid.innerHTML = `
+        <p class="load-error">
+          동화 목록을 불러오지 못했어요.<br>
+          GitHub 저장소의 파일 경로를 확인해 주세요.
+        </p>
+      `;
+    }
   }
 });
-
-storyAudio.addEventListener("loadedmetadata", () => {
-  durationLabel.textContent = formatTime(storyAudio.duration);
-  audioStatus.textContent = "재생 준비 완료!";
-});
-
-storyAudio.addEventListener("timeupdate", () => {
-  if (!Number.isFinite(storyAudio.duration) || storyAudio.duration <= 0) {
-    return;
-  }
-
-  seekBar.value = storyAudio.currentTime / storyAudio.duration * 100;
-  currentTimeLabel.textContent = formatTime(storyAudio.currentTime);
-  durationLabel.textContent = formatTime(storyAudio.duration);
-});
-
-storyAudio.addEventListener("play", () => {
-  playButton.textContent = "⏸";
-  playButton.setAttribute("aria-label", "일시정지");
-  playButton.title = "일시정지";
-  audioStatus.textContent = `${currentSpeed}배속 재생 중`;
-});
-
-storyAudio.addEventListener("pause", () => {
-  playButton.textContent = "▶";
-  playButton.setAttribute("aria-label", "재생");
-  playButton.title = "재생";
-});
-
-storyAudio.addEventListener("ended", () => {
-  playButton.textContent = "▶";
-  playButton.setAttribute("aria-label", "다시 듣기");
-  playButton.title = "다시 듣기";
-  audioStatus.textContent = "음성 재생이 끝났어요.";
-  seekBar.value = 100;
-});
-
-storyAudio.addEventListener("error", () => {
-  audioStatus.textContent = "음성 파일을 찾을 수 없어요. 파일명과 경로를 확인해 주세요.";
-});
-
-doneCheckbox.addEventListener("change", () => {
-  updateDoneLabel();
-  saveMessage.textContent = "아직 저장되지 않았어요. 저장하기를 눌러 주세요.";
-});
-
-saveButton.addEventListener("click", () => {
-  if (doneCheckbox.checked) {
-    completed.add(currentEpisode);
-  } else {
-    completed.delete(currentEpisode);
-  }
-
-  if (saveCompleted()) {
-    renderProgress();
-
-    saveMessage.textContent = doneCheckbox.checked
-      ? "저장했어요! 참 잘했어요 🌷"
-      : "완료 체크를 해제하고 저장했어요.";
-  }
-});
-
-backButton.addEventListener("click", () => {
-  pauseAudio();
-
-  if (!studyScreen.classList.contains("hidden")) {
-    openRange(currentRange);
-  } else {
-    pageTitle.textContent = "영어 동화 공부방";
-    showScreen(homeScreen);
-  }
-});
-
-closeButton.addEventListener("click", () => {
-  pauseAudio();
-  pageTitle.textContent = "영어 동화 공부방";
-  showScreen(homeScreen);
-});
-
-renderRanges();
-renderProgress();
-showScreen(homeScreen);
