@@ -45,10 +45,10 @@ function escapeHTML(value) {
   })[char]);
 }
 
-/* 오디오 파일 경로: 7개 폴더 자동 선택 */
+/* 오디오 경로: 편수에 맞는 폴더 자동 선택 */
 function getAudioPath(number) {
   const folder = Math.ceil(number / 10);
-  return `audio ${folder}/s ${pad(number)}-64k.mp3`;
+  return `audio ${folder}/s ${pad(number)}.mp3`;
 }
 
 /* 완료 기록 */
@@ -126,9 +126,10 @@ function parseStory(text, number) {
   };
 }
 
-/* 구간 버튼 표시 */
+/* 메인 화면 구간 버튼 */
 function renderRangeButtons() {
   const grid = $("rangeGrid");
+
   if (!grid) {
     console.error("rangeGrid 요소를 찾을 수 없습니다.");
     return;
@@ -315,7 +316,7 @@ function openStory(number) {
   if (audio) {
     audio.pause();
 
-    // 변경된 부분: 7개 폴더와 -64k 파일명 적용
+    /* 7개 폴더에서 해당 MP3 불러오기 */
     audio.src = getAudioPath(number);
 
     audio.playbackRate = 1;
