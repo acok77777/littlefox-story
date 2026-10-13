@@ -36,10 +36,7 @@ input {
 button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    filter 0.12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 button:focus-visible,
@@ -127,7 +124,7 @@ button:active {
   display: none !important;
 }
 
-/* 메인 소개 박스: 낮고 작게 */
+/* 메인 소개 */
 .hero-card {
   margin: 2px 0 10px;
   padding: 11px 14px;
@@ -162,7 +159,7 @@ button:active {
   line-height: 1.4;
 }
 
-/* 진도 */
+/* 학습 진도 */
 .progress-card {
   margin: 10px 0 14px;
   padding: 12px 14px;
@@ -244,7 +241,7 @@ button:active {
   font-size: 13px;
 }
 
-/* 메인 구간 버튼 */
+/* 구간 버튼 */
 .range-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -413,65 +410,72 @@ button:active {
   border-color: #ffd0a3;
 }
 
-/* 학습 제목 */
+/* 학습 제목: 1편 · I See · 나는 봐요 한 줄 */
 .study-heading {
-  margin: 8px 0 14px;
-  padding: 13px;
+  margin: 4px 0 8px;
+  padding: 6px 10px;
   border: 1px solid #e9dcff;
-  border-radius: 18px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #fff1f7, #f1edff);
 }
 
 .study-title-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .mini-mascot {
   display: grid;
-  width: 43px;
-  height: 43px;
-  flex: 0 0 43px;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
   place-items: center;
-  border-radius: 14px;
+  border-radius: 9px;
   background: #fff0d1;
-  font-size: 27px;
+  font-size: 20px;
 }
 
 .study-title-text {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  gap: 0 8px;
   min-width: 0;
 }
 
 .eyebrow {
+  flex: 0 0 auto;
   margin: 0;
   color: #a18bab;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 #studyTitle {
   margin: 0;
   color: #df5e9b;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 900;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .title-translation {
-  margin: 3px 0 0;
+  margin: 0;
   color: #8265c2;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 /* 오디오 */
 .audio-card {
   width: 100%;
-  margin: 10px 0 13px;
-  padding: 14px;
+  margin: 8px 0 10px;
+  padding: 12px;
   border: 1px solid #d9eaff;
-  border-radius: 20px;
+  border-radius: 18px;
   background: linear-gradient(145deg, #f1f9ff, #fff 75%);
   box-shadow: 0 4px 14px rgba(104, 153, 200, 0.08);
 }
@@ -566,18 +570,16 @@ button:active {
   background: linear-gradient(135deg, #b58af0, #9160d8);
 }
 
+/* 상태 문구 숨김 */
 .audio-status {
-  min-height: 20px;
-  margin: 9px 0 0;
-  color: #8584a0;
-  font-size: 12px;
+  display: none !important;
 }
 
-/* 영어/해석 표시 */
+/* 영어 / 해석 버튼 */
 .mode-tabs {
   display: flex;
   gap: 7px;
-  margin: 13px 0;
+  margin: 10px 0;
 }
 
 .mode-button {
@@ -625,15 +627,16 @@ button:active {
   font-weight: 800;
 }
 
+/* 한글 해석은 검정색 */
 .story-line.korean {
   margin-bottom: 12px;
-  color: #d94f87;
+  color: #222222;
   background: #fff2f7;
   font-size: 16px;
   font-weight: 700;
 }
 
-/* 완료 카드 */
+/* 공부 완료 */
 .completion-card {
   margin: 18px 0 12px;
   padding: 15px;
@@ -726,7 +729,7 @@ button:active {
 }
 
 /* 작은 휴대폰 */
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .app {
     padding-right: 10px;
     padding-left: 10px;
@@ -773,6 +776,33 @@ button:active {
 
   .mode-button {
     font-size: 12px;
+  }
+
+  .study-title-wrap {
+    gap: 6px;
+  }
+
+  .mini-mascot {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
+    font-size: 18px;
+  }
+
+  .study-title-text {
+    gap: 0 5px;
+  }
+
+  #studyTitle {
+    font-size: 16px;
+  }
+
+  .title-translation {
+    font-size: 12px;
+  }
+
+  .eyebrow {
+    font-size: 9px;
   }
 }
 
