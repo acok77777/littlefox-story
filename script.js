@@ -31,12 +31,10 @@ let currentScreen = "home";
 let currentMode = "both";
 let pendingCompleted = false;
 
-/* 파일 번호 */
 function pad(number) {
   return String(number).padStart(2, "0");
 }
 
-/* HTML 특수문자 처리 */
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -47,7 +45,7 @@ function escapeHTML(value) {
   })[char]);
 }
 
-/* 완료 기록 불러오기 */
+/* 완료 기록 */
 function getCompleted() {
   try {
     const saved = JSON.parse(
@@ -68,7 +66,6 @@ function getCompleted() {
   }
 }
 
-/* 완료 기록 저장 */
 function setCompleted(numbers) {
   localStorage.setItem(
     COMPLETED_KEY,
@@ -78,7 +75,7 @@ function setCompleted(numbers) {
   );
 }
 
-/* 텍스트 파일 분석 */
+/* 동화 텍스트 분석 */
 function parseStory(text, number) {
   const lines = text
     .replace(/^\uFEFF/, "")
@@ -123,7 +120,7 @@ function parseStory(text, number) {
   };
 }
 
-/* 메인 화면의 6개 버튼을 즉시 표시 */
+/* 메인 화면 구간 버튼을 먼저 표시 */
 function renderRangeButtons() {
   const grid = $("rangeGrid");
   if (!grid) {
@@ -139,11 +136,9 @@ function renderRangeButtons() {
     >${range.label}</button>
   `).join("");
 
-  grid.querySelectorAll(".range-button").forEach((button) => {
+  grid.querySelectorAll("[data-range]").forEach((button) => {
     button.addEventListener("click", () => {
-      const index = Number(button.dataset.range);
-      const range = RANGES[index];
-
+      const range = RANGES[Number(button.dataset.range)];
       if (range) openRange(range);
     });
   });
@@ -166,12 +161,11 @@ async function loadStory(number) {
 async function loadAllStories() {
   const list = $("storyList");
 
-  // 버튼부터 표시하므로 파일 로딩 실패와 관계없이 구간 버튼이 보여요.
   renderRangeButtons();
   updateProgress();
 
   if (list) {
-    list.innerHTML = "<p>동화 목록을 불러오는 중이에요... 📚</p>";
+    list.innerHTML = "<p>📚 동화 목록을 불러오는 중이에요...</p>";
   }
 
   const results = await Promise.allSettled(
@@ -191,9 +185,8 @@ async function loadAllStories() {
   if (stories.length === 0) {
     if (list) {
       list.innerHTML =
-        "<p>동화를 불러오지 못했어요. data 폴더와 파일 이름을 확인해 주세요.</p>";
+        "<p>🐰 동화를 불러오지 못했어요. data 폴더와 파일 이름을 확인해 주세요.</p>";
     }
-    console.error("동화 파일을 하나도 불러오지 못했습니다.");
     return;
   }
 
@@ -232,7 +225,7 @@ function renderStoryList() {
 
   if (filteredStories.length === 0) {
     list.innerHTML =
-      "<p>이 구간에 표시할 동화가 없어요. 동화 파일 이름을 확인해 주세요.</p>";
+      "<p>📚 이 구간에 표시할 동화가 없어요. 파일 이름을 확인해 주세요.</p>";
     return;
   }
 
@@ -279,7 +272,6 @@ function showScreen(screenName) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* 뒤로 가기 */
 function goBack() {
   if (currentScreen === "study") {
     $("storyAudio")?.pause();
@@ -290,13 +282,12 @@ function goBack() {
   }
 }
 
-/* 홈으로 가기 */
 function goHome() {
   $("storyAudio")?.pause();
   showScreen("home");
 }
 
-/* 동화 학습 화면 열기 */
+/* 동화 학습 화면 */
 function openStory(number) {
   const story = stories.find((item) => item.number === number);
   if (!story) return;
@@ -329,13 +320,13 @@ function openStory(number) {
     );
   });
 
-  setAudioStatus("음성을 준비하고 있어요.");
+  setAudioStatus("");
   updateAudioTime();
   renderStoryList();
   showScreen("study");
 }
 
-/* 동화 본문 표시 */
+/* 본문 표시 */
 function renderStoryContent(story) {
   const contentElement = $("storyContent");
   if (!contentElement) return;
@@ -379,7 +370,7 @@ function updateModeButtons() {
   });
 }
 
-/* 완료 체크 표시 */
+/* 완료 상태 */
 function updateCompletionUI() {
   const checkbox = $("doneCheckbox");
   const label = $("doneLabel");
@@ -394,7 +385,7 @@ function updateCompletionUI() {
   if (message) message.textContent = "";
 }
 
-/* 완료 저장 */
+/* 완료 기록 저장 */
 function saveCurrentCompletion() {
   if (!currentStory) return;
 
@@ -414,9 +405,11 @@ function saveCurrentCompletion() {
     setCompleted(completed);
   } catch (error) {
     console.error("완료 기록 저장 오류:", error);
+
     const message = $("saveMessage");
     if (message) {
-      message.textContent = "저장하지 못했어요. 브라우저 설정을 확인해 주세요.";
+      message.textContent =
+        "저장하지 못했어요. 브라우저 설정을 확인해 주세요.";
     }
     return;
   }
@@ -434,7 +427,7 @@ function saveCurrentCompletion() {
   }
 }
 
-/* 학습 진도 표시 */
+/* 학습 진도 */
 function updateProgress() {
   const count = getCompleted().length;
   const countElement = $("progressCount");
@@ -456,7 +449,7 @@ function updateProgress() {
   if (progressText) {
     if (count === 0) {
       progressText.textContent =
-        "아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!";
+        "아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요! 🐣";
     } else if (count === TOTAL_STORIES) {
       progressText.textContent =
         "🎉 축하해요! 64편을 모두 공부했어요!";
@@ -477,12 +470,13 @@ function formatTime(seconds) {
   return `${minutes}:${String(remaining).padStart(2, "0")}`;
 }
 
+/* 오디오 상태 안내는 화면에 표시하지 않음 */
 function setAudioStatus(message) {
   const status = $("audioStatus");
-  if (status) status.textContent = message;
+  if (status) status.textContent = "";
 }
 
-/* 재생 시간과 이동 막대 갱신 */
+/* 오디오 시간 및 진행 막대 */
 function updateAudioTime() {
   const audio = $("storyAudio");
   if (!audio) return;
@@ -519,12 +513,10 @@ async function togglePlayback() {
   if (audio.paused) {
     try {
       await audio.play();
-      setAudioStatus("🎧 동화를 듣고 있어요.");
+      setAudioStatus("");
     } catch (error) {
       console.error("오디오 재생 오류:", error);
-      setAudioStatus(
-        "음성을 재생할 수 없어요. audio 폴더와 파일 이름을 확인해 주세요."
-      );
+      setAudioStatus("");
     }
   } else {
     audio.pause();
@@ -548,7 +540,7 @@ function skipAudio(seconds) {
   updateAudioTime();
 }
 
-/* 배속 변경 */
+/* 재생 속도 */
 function setPlaybackSpeed(speed) {
   const audio = $("storyAudio");
   if (audio) audio.playbackRate = speed;
@@ -561,7 +553,7 @@ function setPlaybackSpeed(speed) {
   });
 }
 
-/* 오디오 이벤트 연결 */
+/* 오디오 이벤트 */
 function setupAudio() {
   const audio = $("storyAudio");
   if (!audio) return;
@@ -598,7 +590,7 @@ function setupAudio() {
       button.textContent = "Ⅱ";
       button.setAttribute("aria-label", "일시정지");
     }
-    setAudioStatus("🎧 동화를 듣고 있어요.");
+    setAudioStatus("");
   });
 
   audio.addEventListener("pause", () => {
@@ -610,17 +602,16 @@ function setupAudio() {
   });
 
   audio.addEventListener("ended", () => {
-    setAudioStatus("🌷 잘 들었어요! 한 번 더 들어도 좋아요.");
+    setAudioStatus("");
   });
 
   audio.addEventListener("error", () => {
-    setAudioStatus(
-      "음성 파일을 찾을 수 없어요. audio/s 번호.mp3 파일을 확인해 주세요."
-    );
+    setAudioStatus("");
+    console.warn("오디오 파일을 불러오지 못했습니다.");
   });
 }
 
-/* 버튼 이벤트 연결 */
+/* 버튼 이벤트 */
 function setupEvents() {
   $("backButton")?.addEventListener("click", goBack);
   $("closeButton")?.addEventListener("click", goHome);
@@ -653,13 +644,13 @@ function setupEvents() {
   });
 }
 
-/* 시작 */
+/* 사이트 시작 */
 document.addEventListener("DOMContentLoaded", async () => {
   setupEvents();
   setupAudio();
   showScreen("home");
 
-  // 동화 파일 로딩과 별개로 버튼을 먼저 표시
+  // 동화 파일 로딩 전에 버튼을 먼저 보여 줍니다.
   renderRangeButtons();
 
   try {
@@ -670,7 +661,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const list = $("storyList");
     if (list) {
       list.innerHTML =
-        "<p>동화 목록을 불러오지 못했어요. 파일 경로를 확인해 주세요.</p>";
+        "<p>🐰 동화 목록을 불러오지 못했어요. 파일 경로를 확인해 주세요.</p>";
     }
   }
 });
