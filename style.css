@@ -1,54 +1,525 @@
 
-/* 알록달록 동화 목록 */
-.story-item,
-.story-option,
-.story-card {
-  border: 2px solid #f5d9e5;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #fff4f8, #f1f4ff);
-  box-shadow: 0 4px 10px rgba(160, 130, 190, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* =========================
+   기본 디자인
+========================= */
+* {
+  box-sizing: border-box;
 }
 
-/* 눌렀을 때 통통 튀는 느낌 */
-.story-item:active,
-.story-option:active,
-.story-card:active {
+:root {
+  --pink: #ff8fbd;
+  --pink-light: #fff0f6;
+  --blue: #83cfff;
+  --blue-light: #edf8ff;
+  --green: #8eddb4;
+  --green-light: #edfff4;
+  --yellow: #ffda78;
+  --yellow-light: #fff9e6;
+  --purple: #c4a4ff;
+  --purple-light: #f5efff;
+  --orange: #ffb878;
+  --text: #41415b;
+  --muted: #8888a4;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    "Noto Sans KR",
+    "Malgun Gothic",
+    sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 5%, #ffe1ed 0, transparent 24%),
+    radial-gradient(circle at 90% 10%, #e0f4ff 0, transparent 25%),
+    linear-gradient(180deg, #fffafd, #f7f8ff);
+  line-height: 1.65;
+}
+
+/* =========================
+   전체 화면
+========================= */
+.container,
+.app,
+.wrapper,
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px;
+}
+
+/* =========================
+   제목 영역
+========================= */
+h1 {
+  color: #e85d9e;
+  text-align: center;
+  font-size: clamp(25px, 5vw, 36px);
+  font-weight: 900;
+  line-height: 1.35;
+  margin: 15px 0 22px;
+  text-shadow: 2px 3px 0 #ffe1ef;
+}
+
+h2 {
+  color: #7762c5;
+  font-size: 23px;
+  font-weight: 800;
+  margin: 18px 0 12px;
+}
+
+h3 {
+  color: #4c91cb;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+/* =========================
+   공통 카드
+========================= */
+.card,
+.panel,
+.section {
+  background: rgba(255, 255, 255, 0.94);
+  border: 2px solid #f1e5ff;
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 18px rgba(140, 116, 190, 0.09);
+}
+
+/* =========================
+   검색창
+========================= */
+input[type="text"],
+input[type="search"],
+#searchInput {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 15px;
+  border: 2px solid #e5d8ff;
+  border-radius: 15px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+#searchInput:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 4px #eee5ff;
+}
+
+/* =========================
+   버튼 공통 디자인
+========================= */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(.story-item) {
+  border: 0;
+  border-radius: 14px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #ffacd0, #d9b9ff);
+  color: #49365f;
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 3px 0 #e7d5f8;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+button:not(.story-item):hover {
+  filter: brightness(1.03);
+  transform: translateY(-2px);
+}
+
+button:not(.story-item):active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* =========================
+   동화 목록 영역
+========================= */
+#storyList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 14px;
+}
+
+/* 각 동화 카드 */
+.story-item {
+  width: 100%;
+  min-width: 0;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid #f4d8e7;
+  border-radius: 19px;
+  background: #fff0f6;
+  color: var(--text);
+  text-align: left;
+  box-shadow: 0 4px 9px rgba(130, 110, 160, 0.08);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.story-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(130, 110, 160, 0.15);
+}
+
+.story-item:active {
   transform: scale(0.97);
 }
 
-/* 한국어 제목 */
-.story-subtitle {
-  color: #d94f87;
-  font-size: 16px;
-  font-weight: 700;
+/* 현재 선택된 동화 */
+.story-item.active {
+  border: 3px solid #e96ca8;
+  background: linear-gradient(135deg, #ffe0ed, #f3e7ff);
+  box-shadow: 0 0 0 3px #ffeaf4;
 }
 
-/* 동화 목록에 귀여운 포인트 */
-.story-item:nth-child(4n+1),
-.story-option:nth-child(4n+1),
-.story-card:nth-child(4n+1) {
-  background: #fff0f5;
+/* 동화 번호 */
+.story-number {
+  flex-shrink: 0;
+  width: 37px;
+  height: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #db5997;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 2px 5px rgba(130, 90, 130, 0.08);
+}
+
+/* 제목 영역 */
+.story-title-area {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+/* 영어 제목 */
+.story-title-en {
+  color: #45405f;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* 한국어 해석 */
+.story-subtitle {
+  color: #d94f87;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* 완료 및 책 아이콘 */
+.story-done {
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+/* =========================
+   목록별 알록달록 색상
+========================= */
+.story-item.story-color-pink {
+  background: linear-gradient(135deg, #fff0f6, #ffe3ef);
   border-color: #ffc6dc;
 }
 
-.story-item:nth-child(4n+2),
-.story-option:nth-child(4n+2),
-.story-card:nth-child(4n+2) {
-  background: #edf8ff;
+.story-item.story-color-pink .story-number {
+  color: #df4f91;
+}
+
+.story-item.story-color-blue {
+  background: linear-gradient(135deg, #eff9ff, #dff2ff);
   border-color: #b8e2ff;
 }
 
-.story-item:nth-child(4n+3),
-.story-option:nth-child(4n+3),
-.story-card:nth-child(4n+3) {
-  background: #effcf1;
+.story-item.story-color-blue .story-number {
+  color: #368fce;
+}
+
+.story-item.story-color-green {
+  background: linear-gradient(135deg, #f0fff5, #ddf8e7);
   border-color: #bdecc8;
 }
 
-.story-item:nth-child(4n),
-.story-option:nth-child(4n),
-.story-card:nth-child(4n) {
-  background: #fff8e6;
+.story-item.story-color-green .story-number {
+  color: #32996b;
+}
+
+.story-item.story-color-yellow {
+  background: linear-gradient(135deg, #fffbed, #fff1c9);
   border-color: #ffe09a;
+}
+
+.story-item.story-color-yellow .story-number {
+  color: #c28a19;
+}
+
+.story-item.story-color-purple {
+  background: linear-gradient(135deg, #f8f2ff, #ece1ff);
+  border-color: #d6c0ff;
+}
+
+.story-item.story-color-purple .story-number {
+  color: #8b63d9;
+}
+
+.story-item.story-color-orange {
+  background: linear-gradient(135deg, #fff6ec, #ffe8d2);
+  border-color: #ffd0a3;
+}
+
+.story-item.story-color-orange .story-number {
+  color: #d98135;
+}
+
+/* 선택된 카드의 강조 효과 */
+.story-item.active .story-number {
+  background: #ffffff;
+  outline: 2px solid rgba(233, 108, 168, 0.2);
+}
+
+/* =========================
+   동화 본문
+========================= */
+#storyContent {
+  background: #ffffff;
+  border: 2px solid #e8dcff;
+  border-radius: 22px;
+  padding: 20px;
+  margin-top: 15px;
+  box-shadow: 0 6px 18px rgba(140, 116, 190, 0.08);
+}
+
+#storyTitle {
+  color: #df5e9b;
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 900;
+  text-align: center;
+  margin: 8px 0 18px;
+}
+
+/* 본문 한 줄 */
+.story-line {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* 영어 문장 */
+.story-line.english {
+  color: #386fba;
+  background: #eff7ff;
+  font-size: 19px;
+  font-weight: 800;
+  margin-top: 9px;
+}
+
+/* 한국어 해석 */
+.story-line.korean {
+  color: #d94f87;
+  background: #fff2f7;
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   오디오 플레이어
+========================= */
+audio,
+#storyAudio {
+  width: 100%;
+  margin: 12px 0;
+  border-radius: 14px;
+}
+
+#seekBar {
+  width: 100%;
+  accent-color: #e96ca8;
+  cursor: pointer;
+}
+
+#playButton,
+#speed-button,
+#mode-button,
+#saveButton {
+  margin: 5px 4px 5px 0;
+}
+
+/* =========================
+   공부 완료 체크
+========================= */
+input[type="checkbox"] {
+  width: 21px;
+  height: 21px;
+  accent-color: #e96ca8;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+label {
+  font-weight: 700;
+}
+
+/* =========================
+   학습 진도
+========================= */
+#progressText {
+  color: #8060c5;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+  margin: 10px 0;
+}
+
+#progressBar {
+  display: block;
+  width: 100%;
+  height: 15px;
+  overflow: hidden;
+  border: none;
+  border-radius: 20px;
+  background: #eee5ff;
+  accent-color: #bd91ff;
+}
+
+#progressBar::-webkit-progress-bar {
+  background: #eee5ff;
+  border-radius: 20px;
+}
+
+#progressBar::-webkit-progress-value {
+  background: linear-gradient(90deg, #ff9dc7, #c5a3ff, #8bd7ff);
+  border-radius: 20px;
+}
+
+#progressBar::-moz-progress-bar {
+  background: linear-gradient(90deg, #ff9dc7, #c5a3ff, #8bd7ff);
+  border-radius: 20px;
+}
+
+/* =========================
+   링크
+========================= */
+a {
+  color: #8a68ce;
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* =========================
+   모바일 화면
+========================= */
+@media (max-width: 600px) {
+  .container,
+  .app,
+  .wrapper,
+  main {
+    padding: 10px;
+  }
+
+  h1 {
+    margin-top: 10px;
+    font-size: 27px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .card,
+  .panel,
+  .section {
+    padding: 13px;
+    border-radius: 18px;
+  }
+
+  #storyList {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .story-item {
+    min-height: 70px;
+    padding: 10px 12px;
+    border-radius: 17px;
+  }
+
+  .story-number {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .story-title-en {
+    font-size: 16px;
+  }
+
+  .story-subtitle {
+    font-size: 14px;
+  }
+
+  #storyContent {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .story-line.english {
+    font-size: 18px;
+    padding: 9px;
+  }
+
+  .story-line.korean {
+    font-size: 16px;
+    padding: 9px;
+  }
+
+  button:not(.story-item) {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   접근성: 움직임 줄이기
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
