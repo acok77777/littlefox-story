@@ -1,10 +1,9 @@
-
 <!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f9cfe0">
+  <meta name="theme-color" content="#ffb9d5">
   <title>영어 동화 공부방</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -66,19 +65,24 @@
       </div>
 
       <section class="audio-card">
-        <div class="audio-card-title">🎧 영어 듣기</div>
+        <div class="audio-topline">
+          <div class="audio-card-title">🎧 영어 듣기</div>
+          <button
+            id="playButton"
+            class="play-button"
+            type="button"
+            aria-label="재생"
+            title="재생"
+          >▶</button>
+        </div>
 
         <audio id="storyAudio" preload="metadata"></audio>
-
-        <div class="audio-main-controls">
-          <button id="playButton" class="play-button" type="button">▶ 재생</button>
-          <span id="audioStatus" class="audio-status">음성을 준비하고 있어요.</span>
-        </div>
 
         <div class="seek-labels">
           <span id="currentTime">0:00</span>
           <span id="duration">0:00</span>
         </div>
+
         <input
           id="seekBar"
           class="seek-bar"
@@ -90,17 +94,18 @@
           aria-label="음성 재생 위치"
         >
 
-        <div class="audio-skip-controls">
-          <button id="back10Button" type="button">↶ 10초 전</button>
-          <button id="forward10Button" type="button">10초 후 ↷</button>
+        <div class="audio-toolbar">
+          <button id="back5Button" class="audio-control-button skip-button" type="button">↶ 5초</button>
+          <button id="forward5Button" class="audio-control-button skip-button" type="button">5초 ↷</button>
+
+          <div class="speed-controls" role="group" aria-label="재생 속도">
+            <button class="speed-button active" data-speed="1" type="button">1배속</button>
+            <button class="speed-button" data-speed="1.5" type="button">1.5배속</button>
+            <button class="speed-button" data-speed="2" type="button">2배속</button>
+          </div>
         </div>
 
-        <div class="speed-label">재생 속도</div>
-        <div class="speed-controls" role="group" aria-label="재생 속도">
-          <button class="speed-button active" data-speed="1" type="button">1배속</button>
-          <button class="speed-button" data-speed="2" type="button">2배속</button>
-          <button class="speed-button" data-speed="3" type="button">3배속</button>
-        </div>
+        <p id="audioStatus" class="audio-status" aria-live="polite">음성을 준비하고 있어요.</p>
       </section>
 
       <div class="mode-tabs" role="group" aria-label="표시할 내용">
