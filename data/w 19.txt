@@ -1,0 +1,64 @@
+﻿제목: Pass the Pie Please 파이 좀 건네주세요
+
+BOY: Pass the bread please.
+아들: 빵 좀 건네주세요.
+
+MOM: Here you go.
+엄마: 여기 있다.
+
+BOY: Thank you.
+아들: 감사해요.
+
+BOY: Pass the butter please.
+아들: 버터 좀 건네주세요.
+
+MOM: Here you go.
+엄마: 여기 있다.
+
+BOY: Thank you.
+아들: 감사해요.
+
+GIRL: Pass the chicken please.
+딸:  치킨 좀 건네주세요.
+
+DAD: Here you go.
+아빠: 여기 있다.
+
+GIRL: Thank you.
+딸: 감사해요.
+
+MOM: Pass the rice please.
+엄마: 밥 좀 건네주렴.
+
+GIRL: Here you go.
+딸: 여기 있어요.
+
+MOM: Thank you.
+엄마: 고마워.
+
+DAD: Pass the corn please.
+아빠: 옥수수 좀 건네주렴.
+
+BOY: Here you go.
+아들: 여기 있어요.
+
+DAD: Thank you.
+아빠: 고마워.
+
+GIRL: Pass the milk please.
+딸: 우유 좀 건네주세요.
+
+DAD: Here you go.
+아빠: 여기 있다.
+
+GIRL: Thank you.
+딸: 감사해요.
+
+BOY: Pass the pie please.
+아들: 파이 좀 건네주세요.
+
+MOM: Here you go.
+엄마: 여기 있다.
+
+BOY: Thank you.
+아들: 감사해요.

@@ -1,0 +1,28 @@
+﻿제목: Teddy's Day 테디의 하루
+
+Teddy is happy.
+테디는 행복해요.
+
+Teddy is angry.
+테디는 화가 났어요.
+
+Teddy is sad.
+테디는 슬퍼요.
+
+Teddy is thirsty.
+테디는 목이 말라요.
+
+"I want water."
+"난 물을 원해."
+
+Teddy is tired.
+테디는 피곤해요.
+
+Teddy is hungry.
+테디는 배가 고파요.
+
+Teddy is sleepy.
+테디는 졸려요.
+
+Good night!
+잘 자!

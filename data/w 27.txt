@@ -1,0 +1,25 @@
+﻿제목: Float or Sink 뜨거나 가라앉거나
+
+The toy duck floats.
+오리 장난감은 뜨네요.
+
+My shoe sinks.
+내 신발은 가라앉아요.
+
+The ball floats.
+공은 뜨네요.
+
+My towel sinks.
+내 수건은 가라앉아요.
+
+The cup floats.
+컵은 뜨네요.
+
+My spoon sinks.
+내 숟가락은 가라앉아요.
+
+Uh-oh, here comes Mama!
+어, 엄마가 오셨네요!
+
+I sink!
+나는 가라앉아요!

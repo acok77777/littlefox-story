@@ -1,0 +1,37 @@
+﻿제목: Freddy, Fanny, and Felix 프레디와 패니, 그리고 펠릭스
+
+Freddy hops in yellow.
+프레디가 노란색에 깡충 뛰어들어요.
+
+Freddy hops in red.
+프레디가 빨간색에 깡충 뛰어들어요.
+
+Freddy is orange!
+프레디는 오렌지색이네요!
+
+Fanny hops in red.
+패니가 빨간색에 깡충 뛰어들어요.
+
+Fanny hops in blue.
+패니가 파란색에 깡충 뛰어들어요.
+
+Fanny is purple!
+패니는 보라색이네요!
+
+Felix hops in blue.
+펠릭스가 파란색에 깡충 뛰어들어요.
+
+Felix hops in yellow.
+펠릭스가 노란색에 깡충 뛰어들어요.
+
+Felix is green!
+펠릭스는 초록색이네요!
+
+"I missed you!"
+"보고 싶었어!"
+
+Now they are all brown!
+이제 그들은 모두 갈색이에요!
+
+"Oh no! My paint!"
+"앗, 이런! 내 페인트!"

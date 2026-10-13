@@ -1,0 +1,25 @@
+﻿제목: Where Is Kitty? 키티가 어디 있지?
+
+Where is Kitty?
+키티가 어디 있지?
+
+Kitty is not under the bed.
+키티가 침대 밑에 없네.
+
+Kitty is not under the sofa.
+키티가 소파 밑에 없네.
+
+Kitty is not under the table.
+키티가 식탁 밑에 없네.
+
+Kitty is not under the chair.
+키티가 의자 밑에 없네.
+
+Kitty is not under the desk.
+키티가 책상 밑에 없네.
+
+Kitty is not under the car.
+키티가 차 밑에 없네.
+
+Kitty is under the tree!
+키티는 나무 밑에 있구나!

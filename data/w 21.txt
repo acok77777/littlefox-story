@@ -1,0 +1,28 @@
+﻿제목: The Ant 개미
+
+Crawl down the wall.
+벽을 기어서 내려가요.
+
+Climb over the sofa.
+소파를 기어 넘어가요.
+
+Crawl under the table.
+테이블 아래로 기어가요.
+
+Climb over the slippers.
+슬리퍼를 기어 넘어가요.
+
+Crawl past the cat.
+고양이를 지나서 기어가요.
+
+Climb up the chair.
+의자 위로 기어 올라가요.
+
+Crawl onto the plate.
+접시 위로 기어가네요.
+
+A piece of pie.
+파이 한 조각.
+
+Yum, yum, yum!
+얌, 얌, 얌!

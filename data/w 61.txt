@@ -1,0 +1,25 @@
+﻿제목: Ouch! 아얏!
+
+I have a sore throat.
+난 목에 염증이 생겼어요.
+
+I have a broken leg.
+난 다리가 부러졌어요.
+
+I have a toothache.
+난 이가 아파요.
+
+I have a stomachache.
+난 배가 아파요.
+
+I have an earache.
+난 귀앓이를 해요.
+
+I have a bruised tail.
+난 꼬리에 멍이 들었어요.
+
+I have a stuffy nose.
+난 코가 막혔어요.
+
+I have a headache.
+난 머리가 아파요.

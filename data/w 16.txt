@@ -1,0 +1,73 @@
+﻿제목: Musical Chairs 의자에 먼저 앉기 놀이
+
+One, two, three, four, five, six, seven, eight.
+하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟.
+
+Eight chairs.
+의자 여덟 개.
+
+"I’m out!"
+"난 아웃이네!"
+
+One, two, three, four, five, six, seven.
+하나, 둘, 셋, 넷, 다섯, 여섯, 일곱.
+
+Seven chairs.
+의자 일곱 개.
+
+"I’m out!"
+"난 아웃이야!"
+
+One, two, three, four, five, six.
+하나, 둘, 셋, 넷, 다섯, 여섯.
+
+Six chairs.
+의자 여섯 개.
+
+"I’m out!"
+"난 아웃이네!"
+
+One, two, three, four, five.
+하나, 둘, 셋, 넷, 다섯.
+
+Five chairs.
+의자 다섯 개.
+
+"I’m out!"
+"난 아웃이야!"
+
+One, two, three, four.
+하나, 둘, 셋, 넷.
+
+Four chairs.
+의자 네 개.
+
+"I’m out!"
+"난 아웃이네!"
+
+One, two, three.
+하나, 둘, 셋.
+
+Three chairs.
+의자 세 개.
+
+"I’m out!"
+"난 아웃이야!"
+
+One, two.
+하나, 둘.
+
+Two chairs.
+의자 두 개.
+
+"I’m out!"
+"난 아웃이야!"
+
+One.
+하나.
+
+One chair!
+의자 한 개!
+
+"I win!"
+"내가 이겼네!"

@@ -1,0 +1,49 @@
+﻿제목: Grandpa's Farm 할아버지네 농장
+
+"Cock-a-doodle-doo."
+"꼬끼오."
+
+"Cluck, cluck, peep, peep."
+"꼬꼬댁 꼬꼬 삐악 삐악."
+
+I feed the chickens.
+나는 닭들에게 모이를 줍니다.
+
+"Baa, baa."
+"매에 매에."
+
+I feed the sheep.
+나는 양들에게 먹이를 주고요.
+
+"Quack, quack."
+'꽥 꽥."
+
+I feed the ducks.
+나는 오리들에게 먹이를 줘요.
+
+"Neigh, neigh."
+"히이잉 히이잉."
+
+I feed the horse.
+나는 말에게 먹이를 줍니다.
+
+"Moo, moo."
+"음매 음매."
+
+I feed the cow.
+나는 암소에게 먹이를 주고요.
+
+"Oink, oink."
+"꿀 꿀."
+
+I feed the pig.
+나는 돼지에게 먹이를 줘요.
+
+"Bark, bark, bark."
+"멍 멍 멍."
+
+Oh! You are hungry too!
+아! 너도 배가 고프구나!
+
+I will feed you.
+내가 너에게 먹이를 줄게.

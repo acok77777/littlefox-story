@@ -1,0 +1,25 @@
+﻿제목: I See 나는 봐요
+
+I see a rock.
+나는 바위를 봐요.
+
+I see an ant.
+나는 개미를 봐요.
+
+I see a flower.
+나는 꽃을 봐요.
+
+I see a butterfly.
+나는 나비를 봐요.
+
+I see a bee.
+나는 벌을 봐요.
+
+I see a tree.
+나는 나무를 봐요.
+
+I see a cat.
+나는 고양이를 봐요.
+
+Oh, run!
+앗, 뛰어!

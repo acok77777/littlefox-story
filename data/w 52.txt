@@ -1,0 +1,28 @@
+﻿제목: Costume Party 변장 파티
+
+Sally is a princess.
+샐리는 공주예요.
+
+Jack is a pirate.
+잭은 해적이에요.
+
+Jane is an astronaut.
+제인은 우주 비행사이고요.
+
+Tommy is a clown.
+토미는 광대랍니다.
+
+Lisa is an angel.
+리사는 천사예요.
+
+Jason is a cowboy.
+제이슨은 카우보이예요.
+
+Julie is a wizard.
+줄리는 마법사이고요.
+
+I am a ghost.
+나는 유령이랍니다.
+
+Boo!
+우우!

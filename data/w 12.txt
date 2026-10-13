@@ -1,0 +1,28 @@
+﻿제목: My Day 나의 하루
+
+It is morning.
+아침이에요.
+
+We eat breakfast.
+우리는 아침 식사를 해요.
+
+It is afternoon.
+오후예요.
+
+We eat lunch.
+우리는 점심을 먹어요.
+
+It is evening.
+저녁이에요.
+
+We eat dinner.
+우리는 저녁 식사를 해요.
+
+It is night.
+밤이에요.
+
+We go to bed.
+우리는 잠자리에 들어요.
+
+Good night!
+안녕히 주무세요!

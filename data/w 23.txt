@@ -1,0 +1,25 @@
+﻿제목: Big and Small 큰 것과 작은 것
+
+My hat is small.
+내 모자는 작아요.
+
+My hat is big.
+내 모자는 크지요.
+
+My bag is light.
+내 가방은 가벼워요.
+
+My bag is heavy.
+내 가방은 무겁지요.
+
+My train is short.
+내 기차는 짧아요.
+
+My train is long.
+내 기차는 길지요.
+
+My book is open.
+내 책은 펼쳐져 있어요.
+
+My book is closed.
+내 책은 덮여 있지요.

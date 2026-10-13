@@ -1,0 +1,43 @@
+﻿제목: On the Hill 언덕 위
+
+A table.
+탁자 하나.
+
+An apple.
+사과 하나.
+
+The apple is on the table.
+탁자 위에 사과가 있어요.
+
+A pot.
+화분 하나.
+
+A flower.
+꽃 한 송이.
+
+The flower is in the pot.
+화분 안에 꽃이 있네요.
+
+A box.
+상자 하나.
+
+An egg.
+계란 하나.
+
+The egg is in the box.
+상자 안에 계란이 있어요.
+
+A hill.
+언덕 하나.
+
+A cow.
+젖소 한 마리.
+
+The cow is on the hill.
+언덕 위에 젖소가 있네요.
+
+The apple is on the box on the cow . . .
+사과는 언덕 위의 탁자 위의......
+
+. . . on the table on the hill! Whoa!
+젖소 위의 상자 위에 있어요! 워!

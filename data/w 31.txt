@@ -1,0 +1,25 @@
+﻿제목: Go, Go, Go 가자, 가자, 가자
+
+I will take my car.
+나는 나의 차를 탈 거예요.
+
+I will take my bus.
+난 내 버스를 탈 거예요.
+
+I will take my truck.
+나는 내 트럭을 탈 겁니다.
+
+I will take my train.
+난 나의 기차를 탈 거예요.
+
+I will take my skateboard.
+난 내 스케이트보드를 탈 거예요.
+
+I will take my motorcycle.
+나는 내 오토바이를 탈 겁니다.
+
+I will take my bicycle.
+난 내 자전거를 탈 거예요.
+
+I will take my broom!
+난 내 빗자루를 탈 거야!

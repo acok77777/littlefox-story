@@ -1,0 +1,28 @@
+﻿제목: Rainbow Car 무지개 자동차
+
+This car is red.
+이 자동차는 빨간색이에요.
+
+This car is pink.
+이 자동차는 분홍색이고요.
+
+This car is orange.
+이 자동차는 주황색이네요.
+
+This car is yellow.
+이 자동차는 노란색이에요.
+
+This car is green.
+이 자동차는 초록색이고요.
+
+This car is blue.
+이 자동차는 파란색이네요.
+
+This car is brown.
+이 자동차는 갈색이에요.
+
+This car is purple.
+이 자동차는 자주색이네요.
+
+Wow! A rainbow car.
+와! 무지개 자동차구나.

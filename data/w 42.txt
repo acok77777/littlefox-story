@@ -1,0 +1,25 @@
+﻿제목: Mr. Shapey 쉐이피 아저씨
+
+My head is a circle.
+내 머리는 동그랗지.
+
+My hat is a triangle.
+내 모자는 삼각형이야.
+
+My body is a square.
+내 몸은 정사각형이야.
+
+My arms are rectangles.
+내 팔들은 직사각형이야.
+
+My legs are rectangles too.
+내 다리들도 직사각형이지.
+
+My hands are diamonds.
+내 손들은 마름모야.
+
+My feet are ovals.
+내 발들은 타원형이지.
+
+Mr. Shapey is my name!
+쉐이피 아저씨가 내 이름이란다!

@@ -1,0 +1,25 @@
+﻿제목: Sad, Sadder, Saddest 슬퍼요. 더 슬퍼요. 가장 슬퍼요.
+
+Timmy is sad.
+티미는 슬퍼요.
+
+Aunt Tara is sadder.
+타라 아줌마는 더 슬퍼요.
+
+Mr. Tan is saddest.
+탠 아저씨가 가장 슬퍼요.
+
+Mr. Tan needs a hug!
+탠 아저씨를 껴안아줘야겠어요!
+
+Stan’s shoes are old.
+스탠의 신발은 낡았어요.
+
+Sarah’s shoes are older.
+사라의 신발은 더 낡았어요.
+
+Sam’s shoes are oldest.
+샘의 신발이 가장 낡았어요.
+
+Sam needs new shoes!
+샘은 새로운 신발이 필요해요!

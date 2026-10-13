@@ -1,0 +1,34 @@
+﻿제목: Dressing Up 옷 차려입기
+
+I put on Mommy's dress.
+난 엄마의 드레스를 입어요.
+
+I put on Daddy's shirt.
+난 아빠의 셔츠를 입어요.
+
+I put on Mommy's scarf.
+난 엄마의 스카프를 둘러요.
+
+I put on Daddy's tie.
+난 아빠의 넥타이를 매요.
+
+I put on Mommy's shoes.
+난 엄마의 신발을 신어요.
+
+I put on Daddy's boots.
+난 아빠의 부츠를 신어요.
+
+I put on Mommy's jewelry.
+난 엄마의 보석을 달아요.
+
+I put on Daddy's watch.
+난 아빠의 시계를 차요.
+
+I put on Mommy's hat.
+난 엄마의 모자를 써요.
+
+I put on Daddy's hat.
+난 아빠의 모자를 써요.
+
+We are going out!
+우린 외출해요!

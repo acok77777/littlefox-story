@@ -1,0 +1,34 @@
+﻿제목: Balloons 풍선
+
+I have one balloon.
+나는 풍선 한 개를 갖고 있어요.
+
+I have two balloons.
+나는 풍선 두 개를 갖고 있어요.
+
+I have three balloons.
+나는 풍선 세 개를 갖고 있어요.
+
+I have four balloons.
+나는 풍선 네 개를 갖고 있어요.
+
+I have five balloons.
+나는 풍선 다섯 개를 갖고 있어요.
+
+I have six balloons.
+나는 풍선 여섯 개를 갖고 있어요.
+
+I have seven balloons.
+나는 풍선 일곱 개를 갖고 있어요.
+
+I have eight balloons.
+나는 풍선 여덟 개를 갖고 있어요.
+
+I have nine balloons.
+나는 풍선 아홉 개를 갖고 있어요.
+
+I have ten balloons.
+나는 풍선 열 개를 갖고 있어요.
+
+Oh! I am going up, up, up!
+와! 내가 위로, 위로, 위로 올라가고 있네요!

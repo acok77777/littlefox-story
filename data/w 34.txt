@@ -1,0 +1,25 @@
+﻿제목: I Can Walk 난 걸을 수 있어요
+
+I can walk.
+난 걸을 수 있어요.
+
+I can climb.
+난 기어오를 수 있어요.
+
+I can hug.
+난 껴안을 수 있어요.
+
+I can jump.
+난 뛰어오를 수 있어요.
+
+I can swim.
+난 수영할 수 있어요.
+
+I can hop.
+난 깡충 뛸 수 있어요.
+
+I can crawl.
+난 기어갈 수 있어요.
+
+I can fly.
+난 날 수 있어요.

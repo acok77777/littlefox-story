@@ -1,0 +1,25 @@
+﻿제목: Yummy Soup 맛있는 수프
+
+They are beans.
+그것들은 콩이에요.
+
+They are onions.
+그것들은 양파이고요.
+
+They are carrots.
+그것들은 당근이지요.
+
+They are potatoes.
+그것들은 감자예요.
+
+They are mushrooms.
+그것들은 버섯이고요.
+
+They are tomatoes.
+그것들은 토마토이지요.
+
+They are red peppers.
+그것들은 빨간 고추예요.
+
+Wow! Yummy soup.
+와! 맛있는 수프네요.

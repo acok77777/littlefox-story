@@ -1,0 +1,31 @@
+﻿제목: Who Is It? 그것은 누구일까요?
+
+Who is playing in the bushes?
+누가 덤불 속에서 놀고 있을까요?
+
+A bird!
+새 한 마리네요!
+
+Who is hiding in the tree?
+누가 나무에 숨어 있을까요?
+
+A squirrel!
+다람쥐 한 마리예요!
+
+Who is sleeping in the rocks?
+누가 바위들 틈에서 자고 있을까요?
+
+A snake!
+뱀 한 마리네요!
+
+Who is swimming in the river?
+누가 강에서 수영하고 있을까요?
+
+A duck!
+오리 한 마리예요!
+
+Who is in the tent?
+누가 텐트 안에 있을까요?
+
+Me!
+나예요!

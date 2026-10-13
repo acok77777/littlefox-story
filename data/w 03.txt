@@ -1,0 +1,25 @@
+﻿제목: Greedy Monkey 욕심 많은 원숭이
+
+I want an apple.
+나는 사과를 원해요.
+
+I want a banana.
+나는 바나나를 원해요.
+
+I want a pear.
+나는 배를 원해요.
+
+I want an orange.
+나는 오렌지를 원해요.
+
+I want a peach.
+나는 복숭아를 원해요.
+
+I want a strawberry.
+나는 딸기를 원해요.
+
+I want a watermelon.
+나는 수박을 원해요.
+
+Oh! Poor monkey.
+저런! 불쌍한 원숭이.

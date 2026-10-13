@@ -1,0 +1,25 @@
+﻿제목: One Cloud, Many Clouds 구름 한 점, 많은 구름들
+
+One cloud.
+구름 한 점.
+
+Many clouds.
+많은 구름들.
+
+One drop.
+물 한 방울.
+
+Many drops.
+많은 물방울들.
+
+One umbrella.
+우산 하나.
+
+Many umbrellas.
+많은 우산들.
+
+One kid.
+아이 한 명.
+
+Many kids.
+많은 아이들.

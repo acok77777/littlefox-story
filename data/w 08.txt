@@ -1,0 +1,43 @@
+﻿제목: Me Too! 나도 해요!
+
+Daddy builds.
+아빠가 만드시네요.
+
+I build too.
+나도 만들어요.
+
+Mommy cooks.
+엄마가 요리를 하시네요.
+
+I cook too.
+나도 요리를 해요.
+
+Daddy paints.
+아빠가 페인트칠을 하시네요.
+
+I paint too.
+나도 색칠을 해요.
+
+Mommy drives.
+엄마가 운전을 하시네요.
+
+I drive too.
+나도 운전을 해요.
+
+Daddy reads.
+아빠가 책을 읽으시네요.
+
+I read too.
+나도 책을 읽어요.
+
+Mommy cleans.
+엄마가 청소를 하시네요.
+
+I clean too.
+나도 청소를 해요.
+
+Daddy sleeps.
+아빠가 주무시네요.
+
+I sleep too.
+나도 자요.

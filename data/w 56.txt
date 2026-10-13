@@ -1,0 +1,49 @@
+﻿제목: Surprise, Teacher! 깜짝 선물이에요, 선생님!
+
+Children: Surprise!
+아이들: 깜짝 선물이에요!
+
+Teacher: Are they pencils?
+선생님: 연필이니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they erasers?
+선생님: 지우개니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they rulers?
+선생님: 자니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they scissors?
+선생님: 가위니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they notebooks?
+선생님: 공책이니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they pencil cases?
+선생님: 필통이니?
+
+Children: No, they aren't.
+아이들: 아니요.
+
+Teacher: Are they rubber stamps?
+선생님: 고무 도장이니?
+
+Children: Yes, they are!
+아이들: 네, 맞아요!
+
+Children: Happy birthday, Teacher!
+아이들: 선생님, 생일 축하해요!

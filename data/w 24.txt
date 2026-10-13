@@ -1,0 +1,25 @@
+﻿제목: Baseball! 야구!
+
+I have a ball.
+나는 공을 가지고 있어요.
+
+This is my ball.
+이것은 내 공이에요.
+
+Laura has a bat.
+로라는 배트를 가지고 있어요.
+
+This is her bat.
+이것은 그녀의 배트예요.
+
+Mike has a glove.
+마이크는 글러브를 가지고 있어요.
+
+This is his glove.
+이것은 그의 글러브예요.
+
+Dad is our coach.
+아빠가 우리의 코치이세요.
+
+Let’s play baseball!
+우리 야구 하자!

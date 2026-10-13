@@ -1,0 +1,25 @@
+﻿제목: Dinosaurs 공룡들
+
+This one has a small head.
+이 공룡은 작은 머리를 가지고 있어요.
+
+This one has a big mouth.
+이 공룡은 큰 입을 가지고 있어요.
+
+This one has a long tail.
+이 공룡은 긴 꼬리를 가지고 있고요.
+
+This one has large wings.
+이 공룡은 큰 날개들을 가지고 있네요.
+
+This one has sharp horns.
+이 공룡은 뾰족한 뿔들을 가지고 있고요.
+
+This one has a long neck.
+이 공룡은 긴 목을 가지고 있네요.
+
+This one has tiny arms.
+이 공룡은 아주 작은 팔들을 가지고 있어요.
+
+But it has huge teeth! Ah!
+하지만 그건 아주 커다란 이빨을 가지고 있군요! 아아!

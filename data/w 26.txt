@@ -1,0 +1,25 @@
+﻿제목: Who Is Working? 누가 일하고 있어요?
+
+The firefighter is working.
+소방관이 일하고 있어요.
+
+The nurse is working.
+간호사가 일하고 있네요.
+
+The sailor is working.
+선원이 일하고 있어요.
+
+The police officer is working.
+경찰관이 일하고 있네요.
+
+The engineer is working.
+기술자가 일하고 있어요.
+
+The chef is working.
+요리사가 일하고 있네요.
+
+The farmer is working.
+농부가 일하고 있어요.
+
+"Have a nice day!"
+"좋은 하루 보내세요!"

@@ -1,0 +1,34 @@
+﻿제목: My Team 나의 팀
+
+She is first.
+쟤가(그녀가) 첫 번째야.
+
+He is second.
+쟤가(그가) 두 번째이고.
+
+She is third.
+쟤는(그녀는) 세 번째야.
+
+He is fourth.
+쟤는(그는) 네 번째야.
+
+He is fifth.
+쟤는(그는) 다섯 번째이고.
+
+She is sixth.
+쟤는(그녀는) 여섯 번째야.
+
+He is seventh.
+쟤가(그가) 일곱 번째네.
+
+She is eighth.
+쟤는(그녀는) 여덟 번째야.
+
+She is ninth.
+쟤는(그녀는) 아홉 번째이고.
+
+I am tenth.
+나는 열 번째야.
+
+My team is great!
+나의 팀은 멋져!
