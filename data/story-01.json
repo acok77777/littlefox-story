@@ -1,9 +1,0 @@
-{
-  "episode": 1,
-  "title": "I See",
-  "audio": "audio/s-01.mp3",
-  "lines": [
-    { "en": "I see a rock.", "ko": "나는 바위를 봐요." },
-    { "en": "I see an ant.", "ko": "나는 개미를 봐요." }
-  ]
-}
