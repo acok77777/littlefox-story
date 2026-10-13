@@ -318,7 +318,7 @@ input:focus-visible {
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 72px;
+  min-height: 78px;
   padding: 12px;
   border: 1px solid #eadbf4;
   border-radius: 18px;
@@ -353,19 +353,24 @@ input:focus-visible {
   flex-direction: column;
 }
 
+/* 영어 제목 */
 .story-name {
   overflow: hidden;
   color: #5b4a6b;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* 한국어 해석: 기존보다 한 치수 크게 */
 .story-subtitle {
   overflow: hidden;
-  color: #9b8ba6;
-  font-size: 12px;
+  margin-top: 2px;
+  color: #8b719d;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -434,7 +439,6 @@ input:focus-visible {
   box-shadow: 0 7px 20px rgba(128, 81, 187, 0.09);
 }
 
-/* 제목 왼쪽, 재생 버튼 오른쪽 */
 .audio-topline {
   display: flex;
   align-items: center;
@@ -449,7 +453,6 @@ input:focus-visible {
   font-weight: 800;
 }
 
-/* 재생 버튼 */
 .play-button {
   display: grid;
   width: 45px;
@@ -472,12 +475,10 @@ input:focus-visible {
   filter: brightness(0.96);
 }
 
-/* HTML 오디오 자체는 화면에 표시하지 않음 */
 #storyAudio {
   display: none;
 }
 
-/* 재생 시간 */
 .seek-labels {
   display: flex;
   align-items: center;
@@ -489,7 +490,6 @@ input:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-/* 긴 재생 막대 */
 .seek-bar {
   display: block;
   width: 100%;
@@ -536,7 +536,7 @@ input:focus-visible {
 }
 
 /* ========================================
-   11. 5초 이동 + 속도 선택 한 줄
+   11. 오디오 버튼 5개 한 줄
 ======================================== */
 .audio-toolbar {
   display: flex;
@@ -547,7 +547,6 @@ input:focus-visible {
   margin-top: 3px;
 }
 
-/* 5초 전 / 5초 후 */
 .audio-control-button {
   display: flex;
   min-width: 0;
@@ -572,7 +571,6 @@ input:focus-visible {
   background: #f5e7ff;
 }
 
-/* 속도 버튼 묶음 */
 .speed-controls {
   display: flex;
   min-width: 0;
@@ -615,7 +613,7 @@ input:focus-visible {
 }
 
 /* ========================================
-   12. 모두 / 영어만 / 해석만
+   12. 모두 / 영어만 / 해석만 버튼
 ======================================== */
 .mode-tabs {
   display: flex;
@@ -666,6 +664,8 @@ input:focus-visible {
 
 .story-content p {
   overflow-wrap: anywhere;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .story-content .english {
@@ -682,14 +682,8 @@ input:focus-visible {
   line-height: 1.8;
 }
 
-/* script.js에서 별도 클래스 없이 p 태그를 만들 때도 기본 간격 유지 */
-.story-content p {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
 /* ========================================
-   14. 공부 완료 카드 전체
+   14. 공부 완료 카드
 ======================================== */
 .completion-card {
   width: 100%;
@@ -701,7 +695,6 @@ input:focus-visible {
   box-shadow: 0 7px 20px rgba(145, 94, 160, 0.10);
 }
 
-/* 질문 + 설명 글씨 */
 .completion-copy {
   display: flex;
   align-items: center;
@@ -740,7 +733,6 @@ input:focus-visible {
   line-height: 1.6;
 }
 
-/* 체크박스 영역 */
 .done-toggle {
   display: flex;
   align-items: center;
@@ -795,7 +787,6 @@ input:focus-visible {
   background: #fff7ff;
 }
 
-/* 예쁜 저장 버튼 */
 .save-button {
   display: flex;
   width: 100%;
@@ -829,7 +820,6 @@ input:focus-visible {
   text-align: center;
 }
 
-/* 기기 저장 안내 */
 .small-note {
   margin: 12px 3px 22px;
   color: #9b8ba5;
@@ -850,7 +840,7 @@ input:focus-visible {
 }
 
 /* ========================================
-   16. 모바일 화면 최적화
+   16. 모바일 화면
 ======================================== */
 @media (max-width: 380px) {
   .app {
@@ -889,9 +879,16 @@ input:focus-visible {
   .completion-card {
     padding: 14px;
   }
+
+  /* 작은 화면에서도 해석 글씨가 잘 보이게 */
+  .story-subtitle {
+    font-size: 15px;
+  }
 }
 
-/* 태블릿 및 넓은 화면 */
+/* ========================================
+   17. 태블릿 및 넓은 화면
+======================================== */
 @media (min-width: 600px) {
   .app {
     padding: 24px 22px 35px;
