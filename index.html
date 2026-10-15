@@ -1,28 +1,166 @@
+```html
+<!doctype html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffb9d5">
 
   <title>리틀팍스 동화 레벨 1단계</title>
   <meta name="description" content="귀여운 동물 친구들과 함께 영어 동화를 읽고 듣고 공부해요!">
 
-  <!-- 카카오톡 대표 이미지 설정 -->
+  <!-- 카카오톡 링크 미리보기 대표 이미지 -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="리틀팍스 동화">
   <meta property="og:title" content="리틀팍스 동화 레벨 1단계">
-  <meta property="og:description" content="귀여운 동물 친구들과 함께하는 영어 동화 학습">
+  <meta property="og:description" content="귀여운 동물 친구들과 함께 영어 동화를 읽고 듣고 공부해요!">
   <meta property="og:url" content="https://acok77777.github.io/littlefox-story/">
   <meta property="og:image" content="https://acok77777.github.io/littlefox-story/share-preview.jpg">
+  <meta property="og:image:secure_url" content="https://acok77777.github.io/littlefox-story/share-preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:alt" content="리틀팍스 영어 동화 대표 이미지">
-  <meta property="og:locale" content="ko_KR">
 
-  <!-- 홈 화면 아이콘 및 PWA -->
-  <link rel="icon" type="image/png" href="./icon-192.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="리틀팍스 동화 레벨 1단계">
+  <meta name="twitter:description" content="귀여운 동물 친구들과 함께 영어 동화를 공부해요!">
+  <meta name="twitter:image" content="https://acok77777.github.io/littlefox-story/share-preview.jpg">
+
+  <!-- 앱 아이콘 및 홈 화면 설치 -->
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
   <link rel="manifest" href="./manifest.json">
 
-  <!-- 기존 CSS -->
-  <link rel="stylesheet" href="./style.css">
+  <!-- 기존 디자인 유지 -->
+  <link rel="stylesheet" href="./style.css?v=2">
 </head>
+
+<body>
+  <header class="topbar">
+    <button id="backButton" class="icon-button hidden" type="button" aria-label="뒤로">‹</button>
+    <div class="brand">
+      <span aria-hidden="true">🐰</span>
+      <h1 id="pageTitle">리틀팍스 동화</h1>
+      <span aria-hidden="true">✦</span>
+    </div>
+    <button id="closeButton" class="icon-button hidden" type="button" aria-label="홈으로">×</button>
+  </header>
+
+  <main class="app">
+    <section id="homeScreen" class="screen">
+      <div class="hero-card">
+        <p class="tiny-label">LITTLE FOX STORY TIME</p>
+        <h2>오늘도 영어랑 친해져 볼까요? ♡</h2>
+        <p class="hero-description">동화를 읽고, 듣고, 공부 완료를 체크해 봐요!</p>
+      </div>
+
+      <section class="progress-card" aria-label="학습 진도">
+        <div class="progress-heading">
+          <strong>🌷 나의 학습 진도</strong>
+          <strong id="progressCount">0 / 64편</strong>
+        </div>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+        <p id="progressText">아직 공부를 시작하지 않았어요. 첫 동화부터 시작해 봐요!</p>
+      </section>
+
+      <div class="section-title">
+        <span aria-hidden="true">🧁</span>
+        <h2>공부할 동화 고르기</h2>
+        <span aria-hidden="true">🍰</span>
+      </div>
+
+      <div class="range-grid" id="rangeGrid"></div>
+      <div class="friendly-tip">🐣 천천히 해도 괜찮아요. 매일 조금씩!</div>
+    </section>
+
+    <section id="listScreen" class="screen hidden">
+      <div class="section-title left">
+        <span aria-hidden="true">📚</span>
+        <h2>동화 목록</h2>
+      </div>
+      <p class="section-description" id="listDescription"></p>
+      <div id="storyList" class="story-list"></div>
+      <div class="friendly-tip">🧸 공부를 마친 편은 체크해 두세요!</div>
+    </section>
+
+    <section id="studyScreen" class="screen hidden">
+      <div class="study-heading">
+        <div class="study-title-wrap">
+          <span class="mini-mascot" aria-hidden="true">🐻</span>
+          <div class="study-title-text">
+            <p class="eyebrow" id="studyEpisode">1편</p>
+            <h2 id="studyTitle">I See</h2>
+            <p class="title-translation" id="studyTitleKo">나는 봐요</p>
+          </div>
+        </div>
+      </div>
+
+      <section class="audio-card">
+        <div class="audio-topline">
+          <div class="audio-card-title">🎧 영어 듣기</div>
+          <button id="playButton" class="play-button" type="button" aria-label="재생">▶</button>
+        </div>
+
+        <audio id="storyAudio" preload="metadata"></audio>
+
+        <div class="seek-labels">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+
+        <input id="seekBar" class="seek-bar" type="range" min="0" max="100" value="0" step="0.1" aria-label="음성 재생 위치">
+
+        <div class="audio-toolbar">
+          <button id="back5Button" class="audio-control-button" type="button">↶ 5초</button>
+          <button id="forward5Button" class="audio-control-button" type="button">5초 ↷</button>
+
+          <div class="speed-controls" role="group" aria-label="재생 속도">
+            <button class="speed-button active" data-speed="1" type="button">1배속</button>
+            <button class="speed-button" data-speed="1.5" type="button">1.5배속</button>
+            <button class="speed-button" data-speed="2" type="button">2배속</button>
+          </div>
+        </div>
+
+        <p id="audioStatus" class="audio-status" aria-live="polite">음성을 준비하고 있어요.</p>
+      </section>
+
+      <div class="mode-tabs" role="group" aria-label="표시할 내용">
+        <button class="mode-button active" data-mode="both" type="button">🌈 모두</button>
+        <button class="mode-button" data-mode="english" type="button">🔤 영어만</button>
+        <button class="mode-button" data-mode="korean" type="button">💗 해석만</button>
+      </div>
+
+      <article id="storyContent" class="story-content"></article>
+
+      <section class="completion-card">
+        <div class="completion-copy">
+          <span class="completion-mascot" aria-hidden="true">🐥</span>
+          <div>
+            <strong>오늘 공부 완료했나요?</strong>
+            <p>체크한 뒤 저장하기를 눌러 주세요.</p>
+          </div>
+        </div>
+
+        <label class="done-toggle">
+          <input type="checkbox" id="doneCheckbox">
+          <span class="custom-check">✓</span>
+          <span id="doneLabel">완료 전</span>
+        </label>
+
+        <button id="saveButton" class="save-button" type="button">💾 저장하기</button>
+        <p id="saveMessage" class="save-message" aria-live="polite"></p>
+      </section>
+
+      <p class="small-note">※ 공부 완료 기록은 이 기기의 브라우저에 저장됩니다.</p>
+    </section>
+  </main>
+
+  <footer class="footer">made with ♡ for little learners</footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
+```
